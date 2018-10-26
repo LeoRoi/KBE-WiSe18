@@ -17,7 +17,7 @@ public class App {
         options.addOption(inputClass);
 
         Option outputFile = new Option("o", "output", true, "Der Name eines Ausgabefiles");
-        inputClass.setArgName("Ausgabefile");
+        outputFile.setArgName("Ausgabefile");
         options.addOption(outputFile);
 
         CommandLineParser parser = new DefaultParser();
@@ -32,7 +32,8 @@ public class App {
                 System.out.println("Report: " + out);
             }
         } catch (ParseException pe) {
-            pe.printStackTrace();
+//            pe.printStackTrace();
+            System.out.println(pe.getMessage());
             formatter.printHelp("Parameters", options);
         }
     }
