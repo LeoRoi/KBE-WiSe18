@@ -1,3 +1,5 @@
+package de.htw.ai.kbe.runmerunner;
+
 import org.apache.commons.cli.*;
 
 public class App {
