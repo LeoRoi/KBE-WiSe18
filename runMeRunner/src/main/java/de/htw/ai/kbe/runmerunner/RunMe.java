@@ -10,5 +10,4 @@ import java.lang.annotation.ElementType;
 @Target({ElementType.METHOD})
 @Documented
 public @interface RunMe {
-    String description() default "No Description";
 }
