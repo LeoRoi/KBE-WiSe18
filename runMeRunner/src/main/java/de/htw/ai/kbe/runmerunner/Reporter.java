@@ -26,6 +26,8 @@ public class Reporter {
     }
 
     public void print(String fileName) {
+
+        // Defines default file name as report.txt
         if (fileName == null || fileName.trim().isEmpty()) {
             fileName = "report.txt";
         }
@@ -48,7 +50,7 @@ public class Reporter {
             if (methodsWithAnnoAndError.isEmpty()) {
                 writer.println("No Methods with RunMe and Errors!");
             } else {
-                writer.println("Invocable Methods with RunMe: " + methodsWithAnnoAndError);
+                writer.println("Invokable Methods with RunMe: " + methodsWithAnnoAndError);
             }
 
             writer.close();

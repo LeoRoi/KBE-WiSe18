@@ -12,7 +12,7 @@ public class UseMe {
 
     @RunMe
     void methodWithAnnotation1(){
-        System.out.println("modules created");
+        System.out.println("modules created annotation class");
     }
 
     @RunMe

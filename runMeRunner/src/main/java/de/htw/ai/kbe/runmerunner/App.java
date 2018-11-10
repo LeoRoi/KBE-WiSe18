@@ -8,8 +8,8 @@ public class App {
         String outputFile = parsedInput[1];
 
         String packagePath = "de.htw.ai.kbe.runmerunner";
-        String annotationName = "RunMe";
-        Reporter report = analyser.analyse(packagePath + "." + classToAnalyse, packagePath + "." + annotationName);
+        Class RunMeClass = RunMe.class;
+        Reporter report = analyser.analyse(packagePath + "." + classToAnalyse, RunMeClass);
         report.print(outputFile);
     }
 }
