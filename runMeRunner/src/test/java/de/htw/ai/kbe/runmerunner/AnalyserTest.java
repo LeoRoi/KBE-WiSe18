@@ -24,10 +24,10 @@ public class AnalyserTest {
 
     @Before
     public void methodBefore() {
-
         reporterExpectedForSubmitTestClass = new Reporter();
         List<String> methodsWithAnno = Arrays.asList("method0", "method1", "method2", "method3", "method4", "toString");
         reporterExpectedForSubmitTestClass.getMethodsWithAnno().addAll(methodsWithAnno);
+
         List<String> methodsWithoutAnno = Arrays.asList("noRmR1", "noRmR2", "noRmR3");
         reporterExpectedForSubmitTestClass.getMethodsWithoutAnno().addAll(methodsWithoutAnno);
         reporterExpectedForSubmitTestClass.getMethodsWithAnnoAndError().put("method4", "IllegalArgumentException");

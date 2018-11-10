@@ -81,6 +81,7 @@ public class Analyser {
         Reporter r = new Reporter();
 
         for (Method m : methods) {
+            m.setAccessible(true);
             Annotation[] annotations = m.getDeclaredAnnotations();
 
             if (annotations.length > 0) {
@@ -88,7 +89,6 @@ public class Analyser {
                     if (a.annotationType().getName().equals(annotationWeNeed)) {
                         try {
                             Object obj = clazz.newInstance();
-                            m.setAccessible(true);
                             m.invoke(obj);
                             r.getMethodsWithAnno().add(m.getName());
                         } catch (Exception e) {

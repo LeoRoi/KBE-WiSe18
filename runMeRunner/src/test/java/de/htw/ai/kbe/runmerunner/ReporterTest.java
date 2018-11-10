@@ -13,7 +13,7 @@ public class ReporterTest {
     @Test
     public void givenTestClassWhenPrintedThenReturnCompleteReport() throws IOException {
 
-        String[] argsComplete = {"java -jar runmerunner-1.0-jar-with-dependencies.jar", "-c className", "-o repo.txt"};
+        String[] argsComplete = {"java -jar runmerunner-1.0-jar-with-dependencies.jar", "-c className", "-o report.txt"};
         Analyser analyser = new Analyser(argsComplete);
         Class RunMeClass = RunMe.class;
         String[] parsedInput = analyser.parseCL();
