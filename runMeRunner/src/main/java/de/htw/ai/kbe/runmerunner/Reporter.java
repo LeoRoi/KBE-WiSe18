@@ -33,7 +33,7 @@ public class Reporter {
         }
 
         try {
-            PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+            PrintWriter writer = new PrintWriter("reports" + fileName, "UTF-8");
 
             if (methodsWithoutAnno.isEmpty()) {
                 writer.println("No Methods without RunMe!");

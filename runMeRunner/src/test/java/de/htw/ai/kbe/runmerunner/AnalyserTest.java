@@ -181,32 +181,4 @@ public class AnalyserTest {
         assertThat(reporterExpected, samePropertyValuesAs(reporterActual));
     }
 
-
-    /*@Test
-    public void givenSubmitTestClassWhenAnalysedThenReturnCompleteReporterObject() {
-        Reporter reporterExpectedForClassMitRM = new Reporter();
-        reporterExpectedForClassMitRM.getMethodsWithAnno().add("method0");
-        reporterExpectedForClassMitRM.getMethodsWithAnno().add("method1");
-        reporterExpectedForClassMitRM.getMethodsWithAnno().add("method2");
-        reporterExpectedForClassMitRM.getMethodsWithAnno().add("method3");
-        reporterExpectedForClassMitRM.getMethodsWithAnno().add("method4");
-        reporterExpectedForClassMitRM.getMethodsWithAnno().add("toString");
-        reporterExpectedForClassMitRM.getMethodsWithoutAnno().add("noRmR1");
-        reporterExpectedForClassMitRM.getMethodsWithoutAnno().add("noRmR2");
-        reporterExpectedForClassMitRM.getMethodsWithoutAnno().add("noRmR3");
-        //reporterExpectedForClassMitRM.getMethodsWithAnnoAndError().put("method1", "IllegalAccessException");
-        //reporterExpectedForClassMitRM.getMethodsWithAnnoAndError().put("method2", "IllegalAccessException");
-        reporterExpectedForClassMitRM.getMethodsWithAnnoAndError().put("method4", "IllegalArgumentException");
-
-        Reporter reporterActual = analyser.analyse("de.htw.ai.kbe.runmerunner.testResources.AbgabeTestClass", RunMeClass);
-
-        assertThat(reporterExpectedForClassMitRM, samePropertyValuesAs(reporterActual));
-    }*/
-
-    /* @Test
-    public void givenTestClassWhenAnalysedThenReturnCompleteReporterObject() {
-        Reporter reporterActual = analyser.analyse("de.htw.ai.kbe.runmerunner.testResources.ClassMitRM", RunMeClass);
-        assertThat(reporterExpectedForClassMitRM, samePropertyValuesAs(reporterActual));
-    }*/
-
 }
