@@ -1,0 +1,3 @@
+Methods without RunMe: [noRmR1, noRmR2, noRmR3]
+Methods with RunMe: [method0, method1, method2, method3, method4, toString]
+Invokable Methods with RunMe: {method4=IllegalArgumentException}
