@@ -1,0 +1,23 @@
+package de.htw.ai.kbe.songs_servlet;
+
+public class UseMe {
+
+    void methodWithoutAnnotation1(){
+        System.out.println("methodWithoutAnnotation1");
+    }
+
+    void methodWithoutAnnotation2(){
+        System.out.println("methodWithoutAnnotation2");
+    }
+
+    @RunMe
+    void methodWithAnnotation1(){
+        System.out.println("final test?");
+    }
+
+    @RunMe
+    void methodWithAnnotationAndArgs(String iWillRuinU) {
+        System.out.println(iWillRuinU);
+    }
+
+}
