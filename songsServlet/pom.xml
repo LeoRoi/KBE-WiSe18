@@ -8,6 +8,7 @@
     <artifactId>songs_servlet</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <name>myServlet</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,10 +51,24 @@
             <version>2.26</version>
         </dependency>
 
+        <!--Jersey deployment-->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
-        <finalName>songs_servlet-1.0</finalName>
+        <finalName>myServlet</finalName>
         <plugins>
 
             <plugin>
@@ -68,7 +83,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>de.htw.ai.kbe.songs_servlet.App</mainClass>
+                            <mainClass>de.htw.ai.kbe.songs_servlet.MyServlet</mainClass>
                         </manifest>
                     </archive>
 
