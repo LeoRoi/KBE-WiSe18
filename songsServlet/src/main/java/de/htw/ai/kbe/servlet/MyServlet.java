@@ -1,42 +1,28 @@
-package de.htw.ai.kbe.songs_servlet;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+package de.htw.ai.kbe.servlet;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
-import java.util.Enumeration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.IOUtils;
 
 public class MyServlet extends HttpServlet {
     //    public static void main(String[] args) {
 //        System.out.println("coming soon");
 //    }
+
+    public String uriToDB = null;
+
+    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+        this.uriToDB = servletConfig.getInitParameter("uriToDB");
+        System.out.println("see, i brought u a msg: " + servletConfig.getInitParameter("uriToDB"));
+    }
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {

@@ -1,4 +1,4 @@
-package de.htw.ai.kbe.songs_servlet;
+package de.htw.ai.kbe.servlet;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

@@ -5,9 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.htw.ai.kbe</groupId>
-    <artifactId>songs_servlet</artifactId>
+    <artifactId>servlet</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <!--<packaging>jar</packaging>-->
+    <packaging>war</packaging>
     <name>myServlet</name>
 
     <properties>
@@ -65,6 +66,20 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Mock-Implementationen für HttpServletRequest, HttpServletResponse, ServletConfig -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.0.1.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.0.1.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -83,7 +98,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>de.htw.ai.kbe.songs_servlet.MyServlet</mainClass>
+                            <mainClass>de.htw.ai.kbe.servlet.MyServlet</mainClass>
                         </manifest>
                     </archive>
 
