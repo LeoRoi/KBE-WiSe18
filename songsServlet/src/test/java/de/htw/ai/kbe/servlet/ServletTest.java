@@ -3,8 +3,6 @@ package de.htw.ai.kbe.servlet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import javax.servlet.ServletException;
 
 import org.junit.Before;
@@ -13,9 +11,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 
-public class MyServletTest {
+public class ServletTest {
 
-    private MyServlet servlet;
+    private Servlet servlet;
     private MockServletConfig config;
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
@@ -24,7 +22,7 @@ public class MyServletTest {
 
     @Before
     public void setUp() throws ServletException {
-        servlet = new MyServlet();
+        servlet = new Servlet();
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
         config = new MockServletConfig();
