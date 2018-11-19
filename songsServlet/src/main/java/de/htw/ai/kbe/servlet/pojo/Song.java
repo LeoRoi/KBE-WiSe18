@@ -1,4 +1,4 @@
-package de.htw.ai.kbe.servlet;
+package de.htw.ai.kbe.servlet.pojo;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

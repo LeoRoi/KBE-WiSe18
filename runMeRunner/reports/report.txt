@@ -1,3 +1,3 @@
-Methods without RunMe: [methodWithoutAnnotation2, methodWithoutAnnotation1]
+Methods without RunMe: [methodWithoutAnnotation1, methodWithoutAnnotation2]
 Methods with RunMe: [methodWithAnnotation1]
 Invokable Methods with RunMe: {methodWithAnnotationAndArgs=IllegalArgumentException}

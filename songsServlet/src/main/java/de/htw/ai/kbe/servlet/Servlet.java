@@ -52,4 +52,7 @@ public class Servlet extends HttpServlet {
             out.close();  // Always close the output writer
         }
     }
+
+    //TODO post()
+    //TODO destroy()
 }
