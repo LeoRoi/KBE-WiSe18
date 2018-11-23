@@ -8,20 +8,18 @@
     <display-name>Beleg 2: Songs Servlet</display-name>
 
     <servlet>
-        <servlet-name>jersey-serlvet</servlet-name>
-        <!--<servlet-class>de.htw.ai.kbe.songs_servlet.MyServletervlet</servlet-class>-->
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <servlet-name>songsServlet</servlet-name>
+        <servlet-class>de.htw.ai.kbe.servlet.Servlet</servlet-class>
         <init-param>
-            <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>de.htw.ai.kbe.servlet</param-value>
+            <param-name>jsonPath</param-name>
+            <param-value>songs.json</param-value>
         </init-param>
-        <load-on-startup>1</load-on-startup>
     </servlet>
 
 
     <!--  http://localhost:8080/POM_NAME/URL_PATTERN  -->
     <servlet-mapping>
-        <servlet-name>jersey-serlvet</servlet-name>
-        <url-pattern>/songs</url-pattern>
+        <servlet-name>songsServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 </web-app>

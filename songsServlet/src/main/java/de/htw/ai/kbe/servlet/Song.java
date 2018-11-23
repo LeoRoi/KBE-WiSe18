@@ -1,27 +1,35 @@
-package de.htw.ai.kbe.servlet.pojo;
+package de.htw.ai.kbe.servlet;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.annotation.Generated;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
+@Generated("com.robohorse.robopojogenerator")
 public class Song {
-    private Integer id;
+
+//    @JsonProperty("id")
+    private int id;
+
+    @JsonProperty("title")
     private String title;
+
+    @JsonProperty("artist")
     private String artist;
+
+    @JsonProperty("album")
     private String album;
-    private Integer released;
 
-    public Song(Integer id, String title, String artist, String album, Integer released) {
-        this.id = id;
-        this.title = title;
-        this.artist = artist;
-        this.album = album;
-        this.released = released;
-    }
+    @JsonProperty("released")
+    private int released;
 
-    public Integer getId() {
+//    public Song(int id, String title, String artist, String album, int released) {
+//        this.id = id;
+//        this.title = title;
+//        this.artist = artist;
+//        this.album = album;
+//        this.released = released;
+//    }
+
+    public int getId() {
         return id;
     }
 
@@ -37,11 +45,11 @@ public class Song {
         return album;
     }
 
-    public Integer getReleased() {
+    public int getReleased() {
         return released;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -57,7 +65,7 @@ public class Song {
         this.album = album;
     }
 
-    public void setReleased(Integer released) {
+    public void setReleased(int released) {
         this.released = released;
     }
 
@@ -66,5 +74,4 @@ public class Song {
         return "Song [id=" + id + ", title=" + title + ", artist=" + artist + ", album=" + album + ", released="
                 + released + "]";
     }
-
 }

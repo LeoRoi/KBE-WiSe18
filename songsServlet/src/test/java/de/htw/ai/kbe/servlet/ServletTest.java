@@ -12,29 +12,32 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 
 public class ServletTest {
-
     private Servlet servlet;
     private MockServletConfig config;
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-
-    private final static String URITODB_STRING = "emotional wasteland";
 
     @Before
     public void setUp() throws ServletException {
         servlet = new Servlet();
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
 
-        config.addInitParameter("uriToDB", URITODB_STRING);
+        config = new MockServletConfig();
+        config.addInitParameter("jsonPath", "songs.json");
         servlet.init(config); //throws ServletException
     }
 
     @Test
-    public void initShouldSetMySignature() {
-        assertEquals(URITODB_STRING, servlet.uriToDB);
+    public void initPath() {
+        assert(!servlet.getJsonPath().isEmpty());
+        System.out.println("jsonPath = " + servlet.getJsonPath());
     }
 
+    @Test
+    public void initSongs() {
+        assert(!servlet.getSongs().isEmpty());
+        System.out.println("songs = " + servlet.getSongs().toString());
+    }
 
 }
