@@ -56,26 +56,50 @@ public class ServletTest {
 
         servlet.doGet(request, response);
         assert(!response.getContentAsString().isEmpty());
+        assert(response.getStatus() == 200);
         System.out.println("do get all = " + response.getContentAsString());
     }
 
     @Test
-    public void getWithId() throws UnsupportedEncodingException {
+    public void getWithId10() throws UnsupportedEncodingException {
         request.addParameter("songId", "10");
         request.addHeader("accept", JSON_CONTENT_TYPE);
 
         servlet.doGet(request, response);
         assert(!response.getContentAsString().isEmpty());
+        assert(response.getStatus() == 200);
         assertEquals(songWithId10, response.getContentAsString().trim());
+
         System.out.println("do get <id=10> = " + response.getContentAsString());
     }
 
     @Test
-    public void getNonExistent() throws UnsupportedEncodingException {
+    public void getNonExistentSong() throws UnsupportedEncodingException {
         request.addParameter("songId", "100");
         request.addHeader("accept", JSON_CONTENT_TYPE);
 
         servlet.doGet(request, response);
         assertEquals("Song with <id=100> not found!", response.getContentAsString().trim());
+        assert(response.getStatus() == 404);
+    }
+
+    @Test
+    public void getWithWrongHeader() throws UnsupportedEncodingException {
+        request.addParameter("songId", "100");
+        request.addHeader("accept", "me like i am");
+
+        servlet.doGet(request, response);
+        assert(response.getStatus() == 406);
+        assertEquals("Could not interpret given header <me like i am>!", response.getContentAsString().trim());
+    }
+
+    @Test
+    public void getWithWrongId() throws UnsupportedEncodingException {
+        request.addParameter("songId", "nightclubbing");
+        request.addHeader("accept", JSON_CONTENT_TYPE);
+
+        servlet.doGet(request, response);
+        assert(response.getStatus() == 400);
+        assertEquals("Could not interpret given id!", response.getContentAsString().trim());
     }
 }

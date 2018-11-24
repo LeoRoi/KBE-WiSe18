@@ -25,15 +25,15 @@ public class Servlet extends HttpServlet {
         utils = new Utils();
     }
 
-    public String getJsonPath() {
+    String getJsonPath() {
         return jsonPath;
     }
 
-    public Queue<Song> getSongs() {
+    Queue<Song> getSongs() {
         return songs;
     }
 
-    public AtomicInteger getCounter() {
+    AtomicInteger getCounter() {
         return counter;
     }
 
@@ -59,7 +59,7 @@ public class Servlet extends HttpServlet {
                     utils.sendResponse(response, 200, objectMapper.writeValueAsString(songs));
                 } else if (headerParams.get("songId") != null) {
                     if (!utils.isInteger(headerParams.get("songId"))) {
-                        utils.sendResponse(response, 200, "Could not interpret given id!");
+                        utils.sendResponse(response, 400, "Could not interpret given id!");
                         return;
                     }
 
