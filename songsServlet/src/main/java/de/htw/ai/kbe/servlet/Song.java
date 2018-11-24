@@ -3,22 +3,22 @@ package de.htw.ai.kbe.servlet;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.annotation.Generated;
 
-@Generated("com.robohorse.robopojogenerator")
+//@Generated("com.robohorse.robopojogenerator")
 public class Song {
 
 //    @JsonProperty("id")
     private int id;
 
-    @JsonProperty("title")
+//    @JsonProperty("title")
     private String title;
 
-    @JsonProperty("artist")
+//    @JsonProperty("artist")
     private String artist;
 
-    @JsonProperty("album")
+//    @JsonProperty("album")
     private String album;
 
-    @JsonProperty("released")
+//    @JsonProperty("released")
     private int released;
 
 //    public Song(int id, String title, String artist, String album, int released) {
