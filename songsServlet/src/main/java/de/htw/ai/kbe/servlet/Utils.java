@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static de.htw.ai.kbe.servlet.Servlet.APPLICATION_JSON;
+import static de.htw.ai.kbe.servlet.Constants.*;
 
 class Utils {
     boolean requestAcceptHeaderOk(String acceptHeader) {

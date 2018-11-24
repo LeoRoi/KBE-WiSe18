@@ -13,10 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class Servlet extends HttpServlet {
-    static final String APPLICATION_JSON = "application/json";
-    static final String ENCODING = "UTF-8";
+import static de.htw.ai.kbe.servlet.Constants.*;
 
+public class Servlet extends HttpServlet {
     private String jsonPath;
 //    private List<Song> songs;
     private Queue<Song> songs;
@@ -51,9 +50,11 @@ public class Servlet extends HttpServlet {
     @Override
     public void init(ServletConfig servletConfig) {
         this.jsonPath = servletConfig.getInitParameter("jsonPath");
+        System.out.println("jsonPath = " + jsonPath);
 
         try {
             songs.addAll(utils.readJSONToSongs(jsonPath));
+            System.out.println("songs = " + songs.toString());
             counter.set(songs.size());
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,12 +66,15 @@ public class Servlet extends HttpServlet {
         try {
             if (utils.requestAcceptHeaderOk(request.getHeader("accept"))) {
                 Map<String, String> headerParams = utils.getRequestParams(request);
+//                String headerAll = headerParams.get("all");
 
+//                if (headerAll != null && headerAll.equals("")) {
                 if (headerParams.get("all") != null) {
                     response.setStatus(HttpServletResponse.SC_OK);
                     response.setContentType(APPLICATION_JSON);
                     response.setCharacterEncoding(ENCODING);
                     response.getWriter().println(objectMapper.writeValueAsString(songs));
+//                    System.out.println(objectMapper.writeValueAsString(songs));
                 } else if (headerParams.get("songId") != null) {
                     int id = Integer.parseInt(headerParams.get("songId"));
 

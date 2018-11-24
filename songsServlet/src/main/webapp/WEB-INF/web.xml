@@ -12,7 +12,7 @@
         <servlet-class>de.htw.ai.kbe.servlet.Servlet</servlet-class>
         <init-param>
             <param-name>jsonPath</param-name>
-            <param-value>songs.json</param-value>
+            <param-value>/home/leoroi/hdd/0/kbe/KBE-WiSe18/songsServlet/songs.json</param-value>
         </init-param>
     </servlet>
 
