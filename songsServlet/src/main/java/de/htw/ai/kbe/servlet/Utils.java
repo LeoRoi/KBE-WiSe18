@@ -12,16 +12,16 @@ import java.util.Map;
 
 import static de.htw.ai.kbe.servlet.Servlet.APPLICATION_JSON;
 
-public class Utils {
-    static boolean requestAcceptHeaderOk(String acceptHeader) {
+class Utils {
+    boolean requestAcceptHeaderOk(String acceptHeader) {
         return (stringOk(acceptHeader) || (APPLICATION_JSON.equals(acceptHeader) || "*".equals(acceptHeader)));
     }
 
-    static boolean stringOk(final String str) {
+    boolean stringOk(final String str) {
         return (str != null && !str.trim().isEmpty());
     }
 
-    static Map<String, String> getRequestParams(HttpServletRequest request) {
+    Map<String, String> getRequestParams(HttpServletRequest request) {
         Map<String, String> acc = new HashMap<>();
         Enumeration<String> paramsEnum = request.getParameterNames();
 
@@ -34,7 +34,7 @@ public class Utils {
     }
 
     // from jaxbjackson
-    static List<Song> readJSONToSongs(String filename) throws FileNotFoundException, IOException {
+    List<Song> readJSONToSongs(String filename) throws FileNotFoundException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         try (InputStream is = new BufferedInputStream(new FileInputStream(filename))) {
             return (List<Song>) objectMapper.readValue(is, new TypeReference<List<Song>>() {

@@ -13,23 +13,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static de.htw.ai.kbe.servlet.Utils.*;
-
 public class Servlet extends HttpServlet {
-    static final public String APPLICATION_JSON = "application/json";
+    static final String APPLICATION_JSON = "application/json";
     static final String ENCODING = "UTF-8";
 
     private String jsonPath;
 //    private List<Song> songs;
-    private Queue<Song> songs = new ConcurrentLinkedQueue<>();
-    private AtomicInteger counter = new AtomicInteger();
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private Queue<Song> songs;
+    private AtomicInteger counter;
+    private ObjectMapper objectMapper;
+    private Utils utils;
 
     public Servlet() {
-        jsonPath = "";
+//        jsonPath = "";
         songs = new ConcurrentLinkedQueue<>();
         counter = new AtomicInteger();
         objectMapper = new ObjectMapper();
+        utils = new Utils();
     }
 
     public String getJsonPath() {
@@ -49,13 +49,11 @@ public class Servlet extends HttpServlet {
     }
 
     @Override
-    public void init(ServletConfig servletConfig) throws ServletException {
+    public void init(ServletConfig servletConfig) {
         this.jsonPath = servletConfig.getInitParameter("jsonPath");
 
         try {
-//            List<Song> songsNotAtomic = readJSONToSongs(jsonPath);
-//            songs = convertToAtomic(songsNotAtomic);
-            songs.addAll(readJSONToSongs(jsonPath));
+            songs.addAll(utils.readJSONToSongs(jsonPath));
             counter.set(songs.size());
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,43 +61,57 @@ public class Servlet extends HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-        if(requestAcceptHeaderOk(request.getHeader("accept"))) {
-            Map<String, String> headerParams = getRequestParams(request);
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            if (utils.requestAcceptHeaderOk(request.getHeader("accept"))) {
+                Map<String, String> headerParams = utils.getRequestParams(request);
 
-            if(headerParams.get("all") != null) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.setContentType(APPLICATION_JSON);
-                response.setCharacterEncoding(ENCODING);
-                response.getWriter().println(objectMapper.writeValueAsString(songs));
-            } else if(headerParams.get("songId") != null) {
-                int id = Integer.parseInt(headerParams.get("songId"));
+                if (headerParams.get("all") != null) {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.setContentType(APPLICATION_JSON);
+                    response.setCharacterEncoding(ENCODING);
+                    response.getWriter().println(objectMapper.writeValueAsString(songs));
+                } else if (headerParams.get("songId") != null) {
+                    int id = Integer.parseInt(headerParams.get("songId"));
 
-                for(Song song : songs) {
-                    if(song.getId() == id) {
-                        response.setStatus(HttpServletResponse.SC_OK);
-                        response.setContentType(APPLICATION_JSON);
-                        response.setCharacterEncoding(ENCODING);
-                        response.getWriter().println(objectMapper.writeValueAsString(song));
-                    } else {
-                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                        response.setContentType(APPLICATION_JSON);
-                        response.setCharacterEncoding(ENCODING);
-                        response.getWriter().println("Song not found!");
+                    for (Song song : songs) {
+                        if (song.getId() == id) {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                            response.setContentType(APPLICATION_JSON);
+                            response.setCharacterEncoding(ENCODING);
+                            response.getWriter().println(objectMapper.writeValueAsString(song));
+                        } else {
+                            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                            response.setContentType(APPLICATION_JSON);
+                            response.setCharacterEncoding(ENCODING);
+                            response.getWriter().println("Song not found!");
+                        }
                     }
+                } else {
+                    response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                    response.setContentType(APPLICATION_JSON);
+                    response.setCharacterEncoding(ENCODING);
+                    response.getWriter().println("Wrong parameters!");
                 }
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
                 response.setContentType(APPLICATION_JSON);
                 response.setCharacterEncoding(ENCODING);
-                response.getWriter().println("Wrong parameters!");
+                response.getWriter().println("Wrong header!");
             }
-        } else {
-            response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-            response.setContentType(APPLICATION_JSON);
-            response.setCharacterEncoding(ENCODING);
-            response.getWriter().println("Wrong header!");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+//    @Override
+//    public void destroy() {
+//        try {
+//            objectMapper.writeValue(new File(jsonPath), songs);
+//            System.out.println("Servlet Exited!");
+//        } catch (UnsupportedOperationException | IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 }
