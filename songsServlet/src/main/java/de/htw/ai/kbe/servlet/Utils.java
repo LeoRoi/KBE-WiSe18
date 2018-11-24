@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -13,8 +14,27 @@ import java.util.Map;
 import static de.htw.ai.kbe.servlet.Constants.*;
 
 class Utils {
+    void sendResponse(HttpServletResponse response, int status, String message) throws IOException {
+        response.setStatus(status);
+        response.setContentType(JSON_CONTENT_TYPE);
+        response.setCharacterEncoding(ENCODING);
+        response.getWriter().println(message);
+    }
+
+    boolean isInteger(String string) {
+        try {
+            Integer.parseInt(string);
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
+
     boolean requestAcceptHeaderOk(String acceptHeader) {
-        return (stringOk(acceptHeader) || (APPLICATION_JSON.equals(acceptHeader) || "*".equals(acceptHeader)));
+        return (stringOk(acceptHeader) && ((JSON_CONTENT_TYPE.equals(acceptHeader) || "*".equals(acceptHeader))));
     }
 
     boolean stringOk(final String str) {
@@ -25,7 +45,7 @@ class Utils {
         Map<String, String> acc = new HashMap<>();
         Enumeration<String> paramsEnum = request.getParameterNames();
 
-        while(paramsEnum.hasMoreElements()) {
+        while (paramsEnum.hasMoreElements()) {
             String parameter = paramsEnum.nextElement();
             acc.put(parameter, request.getParameter(parameter));
         }

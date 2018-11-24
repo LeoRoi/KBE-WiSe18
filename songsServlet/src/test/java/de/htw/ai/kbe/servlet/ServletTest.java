@@ -21,6 +21,7 @@ public class ServletTest {
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
     private ObjectMapper objectMapper;
+    private Utils utils;
 
     @Before
     public void setUp() throws ServletException {
@@ -33,11 +34,12 @@ public class ServletTest {
         servlet.init(config); //throws ServletException
 
         objectMapper = new ObjectMapper();
+        utils = new Utils();
     }
 
     @Test
     public void initPath() {
-        assert(!servlet.getJsonPath().isEmpty());
+        assert(utils.stringOk(servlet.getJsonPath()));
         System.out.println("jsonPath = " + servlet.getJsonPath());
     }
 
@@ -50,10 +52,30 @@ public class ServletTest {
     @Test
     public void getAllSongs() throws UnsupportedEncodingException {
         request.addParameter("all", "the best");
-        request.addHeader("accept", APPLICATION_JSON);
+        request.addHeader("accept", JSON_CONTENT_TYPE);
 
         servlet.doGet(request, response);
+        assert(!response.getContentAsString().isEmpty());
+        System.out.println("do get all = " + response.getContentAsString());
+    }
 
-        System.out.println("doGet = " + response.getContentAsString());
+    @Test
+    public void getWithId() throws UnsupportedEncodingException {
+        request.addParameter("songId", "10");
+        request.addHeader("accept", JSON_CONTENT_TYPE);
+
+        servlet.doGet(request, response);
+        assert(!response.getContentAsString().isEmpty());
+        assertEquals(songWithId10, response.getContentAsString().trim());
+        System.out.println("do get <id=10> = " + response.getContentAsString());
+    }
+
+    @Test
+    public void getNonExistent() throws UnsupportedEncodingException {
+        request.addParameter("songId", "100");
+        request.addHeader("accept", JSON_CONTENT_TYPE);
+
+        servlet.doGet(request, response);
+        assertEquals("Song with <id=100> not found!", response.getContentAsString().trim());
     }
 }
