@@ -109,7 +109,7 @@ public class Servlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (request.getContentType().endsWith("json")) {
+        if (request.getContentType().equals("application/json")) {
             try (ServletInputStream inputStream = request.getInputStream()) {
                 // TODO here has to be a check for the correct json structure
                 if (true) {
@@ -118,6 +118,7 @@ public class Servlet extends HttpServlet {
                     songs.add(song);
                     try {
                         response.setHeader("Location", "http://localhost:8080/songsServlet?songId="+counter);
+                        response.setStatus(200);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

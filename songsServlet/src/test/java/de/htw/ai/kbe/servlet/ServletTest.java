@@ -106,19 +106,33 @@ public class ServletTest {
 
 
     @Test
-    public void postSong() {
-        //request needs payload then use doPost() and check responds somehow
+    public void postSong() throws IOException {
+        request.setContentType("application/json");
+        request.setContent(Constants.songWithId10.getBytes());
+        servlet.doPost(request, response);
+        assert (response.getStatus() == 200);
+    }
 
+    @Test
+    public void postNotAJsonPayload() throws IOException {
+        request.setContentType("html");
+        request.setContent(Constants.songWithId10.getBytes());
+        servlet.doPost(request, response);
+        assert (response.getStatus() == 400);
 
     }
 
     @Test
-    public void postNotAJsonPayload() {
-
-    }
-
-    @Test
-    public void postSongWithWrongJsonStructure() {
-
+    public void postSongWithWrongJsonStructure() throws IOException {
+        String songWithWrongJsonStructure = "{\n" +
+                "\"band\" : \"Metallica\",\n" +
+                "\"instrument\" : \"Guitar\",\n" +
+                "\"album\" : \"First Album\",\n" +
+                "\"released\" : 2017\n" +
+                "}";
+        request.setContentType("application/json");
+        request.setContent(songWithWrongJsonStructure.getBytes());
+        servlet.doPost(request, response);
+        assert (response.getStatus() == 400);
     }
 }
