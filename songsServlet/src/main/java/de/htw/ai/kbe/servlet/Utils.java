@@ -45,7 +45,7 @@ class Utils {
         return (str != null && !str.trim().isEmpty());
     }
 
-    //TODO what about request.getParameterMap()?
+    //TODO why not simply request.getParameterMap()?
     Map<String, String> getRequestParams(HttpServletRequest request) {
         Map<String, String> acc = new HashMap<>();
         Enumeration<String> paramsEnum = request.getParameterNames();

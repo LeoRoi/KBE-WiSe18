@@ -41,6 +41,10 @@ public class Servlet extends HttpServlet {
         return counter;
     }
 
+    /**
+     * loads the external songs.json file and sets the songId counter
+     * @param servletConfig
+     */
     @Override
     public void init(ServletConfig servletConfig) {
         jsonPath = servletConfig.getInitParameter("jsonPath");
@@ -55,11 +59,9 @@ public class Servlet extends HttpServlet {
 
     /**
      * Responds to a http get request with a http response including either all songs
-     * or with the requested song.
-     * - is available
-     * - and checks if the requested id is not null, an integer
-     * @param request http GET request
-     * @param response http response
+     * or the requested song.
+     * @param request
+     * @param response
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -98,14 +100,9 @@ public class Servlet extends HttpServlet {
     }
 
 
-
-    //TODO util method for json format
-    //TODO is the response body empty?
-
     /** generate new ID for a song and store it in the songs list. respond to client with new id in location header.
      * Only accepts json as payload.
      * @Source https://stackoverflow.com/questions/14291027/what-is-the-use-of-response-setcontenttypetext-html-in-servlet#14291042
-     *
      * @param request
      * @param response
      * @throws IOException
@@ -113,27 +110,28 @@ public class Servlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getContentType().endsWith("json")) {
-            //ObjectMapper objectMapper = new ObjectMapper();
             try (ServletInputStream inputStream = request.getInputStream()) {
                 // TODO here has to be a check for the correct json structure
-                Song song = (Song) objectMapper.readValue(inputStream, new TypeReference<Song>() {});
-                song.setId(counter.getAndIncrement());
-                songs.add(song);
-                try /*(PrintWriter out = response.getWriter())*/ {
-                    //response.setContentType("text/plain");
-                    //out.println("songId=" + counter);
-                    response.setHeader("Location", "http://localhost:8080/songsServlet?songId="+counter);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (true) {
+                    Song song = (Song) objectMapper.readValue(inputStream, new TypeReference<Song>() {});
+                    song.setId(counter.getAndIncrement());
+                    songs.add(song);
+                    try {
+                        response.setHeader("Location", "http://localhost:8080/songsServlet?songId="+counter);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    response.sendError(400, "The payload has not the right structure.");
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            try /*(PrintWriter out = response.getWriter())*/ {
-                //out.println("Only JSON format is accepted.");
-                // you don't need to set the content type for sendError(), right?
-                response.sendError(406, "Only JSON format is accepted");
+            try {
+                // TODO you don't need to set the content type for sendError(), right?
+                response.sendError(400, "Only JSON format is accepted");
             } catch (Exception e) {
                 e.printStackTrace();
             }
