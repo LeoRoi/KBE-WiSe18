@@ -107,10 +107,11 @@ public class ServletTest {
 
     @Test
     public void postSong() throws IOException {
-        request.setContentType("application/json");
+        request.setContentType(JSON_CONTENT_TYPE);
         request.setContent(Constants.songWithId10.getBytes());
         servlet.doPost(request, response);
         assert (response.getStatus() == 200);
+        //assert (response.getHeader("songId").equals(servlet.getCounter()));
     }
 
     @Test
@@ -130,9 +131,24 @@ public class ServletTest {
                 "\"album\" : \"First Album\",\n" +
                 "\"released\" : 2017\n" +
                 "}";
-        request.setContentType("application/json");
+        request.setContentType(JSON_CONTENT_TYPE);
         request.setContent(songWithWrongJsonStructure.getBytes());
         servlet.doPost(request, response);
         assert (response.getStatus() == 400);
+    }
+
+    @Test
+    public void postSongWithDiffrentCharacters() throws IOException {
+        //TODO probably needs another check for datatype
+        String songWithDiffrentValues = "{\n" +
+                "\"artist\" : \"1234\",\n" +
+                "\"instrument\" : \"++#A\",\n" +
+                "\"album\" : \"\",\n" +
+                "\"released\" : AB\n" +
+                "}";
+        request.setContentType(JSON_CONTENT_TYPE);
+        request.setContent(songWithDiffrentValues.getBytes());
+        servlet.doPost(request, response);
+        assert (response.getStatus() == 200);
     }
 }

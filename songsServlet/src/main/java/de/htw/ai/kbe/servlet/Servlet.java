@@ -3,6 +3,7 @@ package de.htw.ai.kbe.servlet;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -36,7 +37,6 @@ public class Servlet extends HttpServlet {
         return songs;
     }
 
-    //TODO kann weg, es gibt schon eine get() in java.util.concurrent.atomic.AtomicInteger
     AtomicInteger getCounter() {
         return counter;
     }
@@ -109,10 +109,11 @@ public class Servlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (request.getContentType().equals("application/json")) {
+        if (request.getContentType().equals(Constants.JSON_CONTENT_TYPE)) {
             try (ServletInputStream inputStream = request.getInputStream()) {
-                // TODO here has to be a check for the correct json structure
-                if (true) {
+                Map<String, Object> jsonMap =
+                        objectMapper.readValue(inputStream, new TypeReference<Map<String, Object>>(){});
+                if (utils.jsonStructureOk(jsonMap)) {
                     Song song = (Song) objectMapper.readValue(inputStream, new TypeReference<Song>() {});
                     song.setId(counter.getAndIncrement());
                     songs.add(song);
@@ -123,15 +124,13 @@ public class Servlet extends HttpServlet {
                         e.printStackTrace();
                     }
                 } else {
-                    response.sendError(400, "The payload has not the right structure.");
+                    response.sendError(400, "The payload has not the right JSON structure.");
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                // TODO you don't need to set the content type for sendError(), right?
                 response.sendError(400, "Only JSON format is accepted");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -139,24 +138,23 @@ public class Servlet extends HttpServlet {
         }
     }
 
-    //    @Override
-//    public void destroy() {
-//        try {
-//            objectMapper.writeValue(new File(jsonPath), songs);
-//            System.out.println("Servlet Exited!");
-//        } catch (UnsupportedOperationException | IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-
     @Override
+    public void destroy() {
+        try {
+            objectMapper.writeValue(new File(jsonPath), songs);
+            System.out.println("Servlet Exited!");
+        } catch (UnsupportedOperationException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+/*    @Override
     public void destroy() {
         try {
             utils.writeSongsToJSON((List<Song>) getSongs(), jsonPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 }
