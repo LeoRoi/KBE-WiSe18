@@ -1,12 +1,15 @@
 package de.htw.ai.kbe.servlet;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +22,8 @@ public class Servlet extends HttpServlet {
     private Utils utils;
 
     public Servlet() {
-        songs = new ConcurrentLinkedQueue<>();
-        counter = new AtomicInteger();
+        songs = new ConcurrentLinkedQueue<>();     // concurrentLinkedQueue is concurrent and synchronized unlike synchronizedList(List)
+        counter = new AtomicInteger();             // Counter of the song IDs, atomic for Thread safety
         objectMapper = new ObjectMapper();
         utils = new Utils();
     }
@@ -33,6 +36,7 @@ public class Servlet extends HttpServlet {
         return songs;
     }
 
+    //TODO kann weg, es gibt schon eine get() in java.util.concurrent.atomic.AtomicInteger
     AtomicInteger getCounter() {
         return counter;
     }
@@ -49,6 +53,14 @@ public class Servlet extends HttpServlet {
         }
     }
 
+    /**
+     * Responds to a http get request with a http response including either all songs
+     * or with the requested song.
+     * - is available
+     * - and checks if the requested id is not null, an integer
+     * @param request http GET request
+     * @param response http response
+     */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -85,7 +97,50 @@ public class Servlet extends HttpServlet {
         }
     }
 
-//    @Override
+
+
+    //TODO util method for json format
+    //TODO is the response body empty?
+
+    /** generate new ID for a song and store it in the songs list. respond to client with new id in location header.
+     * Only accepts json as payload.
+     * @Source https://stackoverflow.com/questions/14291027/what-is-the-use-of-response-setcontenttypetext-html-in-servlet#14291042
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getContentType().endsWith("json")) {
+            //ObjectMapper objectMapper = new ObjectMapper();
+            try (ServletInputStream inputStream = request.getInputStream()) {
+                // TODO here has to be a check for the correct json structure
+                Song song = (Song) objectMapper.readValue(inputStream, new TypeReference<Song>() {});
+                song.setId(counter.getAndIncrement());
+                songs.add(song);
+                try /*(PrintWriter out = response.getWriter())*/ {
+                    //response.setContentType("text/plain");
+                    //out.println("songId=" + counter);
+                    response.setHeader("Location", "http://localhost:8080/songsServlet?songId="+counter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try /*(PrintWriter out = response.getWriter())*/ {
+                //out.println("Only JSON format is accepted.");
+                // you don't need to set the content type for sendError(), right?
+                response.sendError(406, "Only JSON format is accepted");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //    @Override
 //    public void destroy() {
 //        try {
 //            objectMapper.writeValue(new File(jsonPath), songs);
@@ -95,4 +150,14 @@ public class Servlet extends HttpServlet {
 //        }
 //
 //    }
+
+    @Override
+    public void destroy() {
+        try {
+            utils.writeSongsToJSON((List<Song>) getSongs(), jsonPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

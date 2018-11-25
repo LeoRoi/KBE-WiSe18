@@ -37,10 +37,15 @@ class Utils {
         return (stringOk(acceptHeader) && ((JSON_CONTENT_TYPE.equals(acceptHeader) || "*".equals(acceptHeader))));
     }
 
+    /**
+     * @param str acceptHeader
+     * @return true if not null and not empty
+     */
     boolean stringOk(final String str) {
         return (str != null && !str.trim().isEmpty());
     }
 
+    //TODO what about request.getParameterMap()?
     Map<String, String> getRequestParams(HttpServletRequest request) {
         Map<String, String> acc = new HashMap<>();
         Enumeration<String> paramsEnum = request.getParameterNames();
@@ -54,11 +59,19 @@ class Utils {
     }
 
     // from jaxbjackson
-    List<Song> readJSONToSongs(String filename) throws FileNotFoundException, IOException {
+    List<Song> readJSONToSongs(String filename) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         try (InputStream is = new BufferedInputStream(new FileInputStream(filename))) {
             return (List<Song>) objectMapper.readValue(is, new TypeReference<List<Song>>() {
             });
+        }
+    }
+
+    // Write a List<Song> into a JSON-file. from jaxbjackson
+    void writeSongsToJSON(List<Song> songs, String filename) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try (OutputStream os = new BufferedOutputStream(new FileOutputStream(filename))) {
+            objectMapper.writeValue(os, songs);
         }
     }
 }

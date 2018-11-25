@@ -13,6 +13,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class ServletTest {
@@ -101,5 +102,23 @@ public class ServletTest {
         servlet.doGet(request, response);
         assert(response.getStatus() == 400);
         assertEquals("Could not interpret given id!", response.getContentAsString().trim());
+    }
+
+
+    @Test
+    public void postSong() {
+        //request needs payload then use doPost() and check responds somehow
+
+
+    }
+
+    @Test
+    public void postNotAJsonPayload() {
+
+    }
+
+    @Test
+    public void postSongWithWrongJsonStructure() {
+
     }
 }
