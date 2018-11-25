@@ -34,7 +34,6 @@ public class ServletTest {
         servlet.init(config); //throws ServletException
 
         objectMapper = new ObjectMapper();
-        utils = new Utils();
     }
 
     @Test
