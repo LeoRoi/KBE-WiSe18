@@ -67,11 +67,21 @@ class Utils {
         }
     }
 
-    // Write a List<Song> into a JSON-file. from jaxbjackson
+    /*// Write a List<Song> into a JSON-file. from jaxbjackson
     void writeSongsToJSON(List<Song> songs, String filename) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         try (OutputStream os = new BufferedOutputStream(new FileOutputStream(filename))) {
             objectMapper.writeValue(os, songs);
         }
+    }*/
+
+    boolean jsonStructureOk(Map jsonMap) {
+        boolean keysOk = jsonMap.containsKey("title") && jsonMap.containsKey("artist") && jsonMap.containsKey("album")
+                && jsonMap.containsKey("released");
+        boolean valuesOk = jsonMap.get("released") instanceof Integer;
+        return keysOk && valuesOk;
     }
+
+
 }
+

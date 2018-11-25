@@ -114,7 +114,8 @@ public class Servlet extends HttpServlet {
                 Map<String, Object> jsonMap =
                         objectMapper.readValue(inputStream, new TypeReference<Map<String, Object>>(){});
                 if (utils.jsonStructureOk(jsonMap)) {
-                    Song song = (Song) objectMapper.readValue(inputStream, new TypeReference<Song>() {});
+                    Song song = objectMapper.convertValue(jsonMap, new TypeReference<Song>() {});
+                    //Song song = (Song) objectMapper.readValue(inputStream, new TypeReference<Song>() {});
                     song.setId(counter.getAndIncrement());
                     songs.add(song);
                     try {

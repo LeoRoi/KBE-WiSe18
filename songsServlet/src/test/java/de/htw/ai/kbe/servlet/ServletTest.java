@@ -141,14 +141,14 @@ public class ServletTest {
     public void postSongWithDiffrentCharacters() throws IOException {
         //TODO probably needs another check for datatype
         String songWithDiffrentValues = "{\n" +
-                "\"artist\" : \"1234\",\n" +
-                "\"instrument\" : \"++#A\",\n" +
+                "\"title\" : \"1234\",\n" +
+                "\"artist\" : \"++#A\",\n" +
                 "\"album\" : \"\",\n" +
-                "\"released\" : AB\n" +
+                "\"released\" : Ad\n" +
                 "}";
         request.setContentType(JSON_CONTENT_TYPE);
         request.setContent(songWithDiffrentValues.getBytes());
         servlet.doPost(request, response);
-        assert (response.getStatus() == 200);
+        assert (response.getStatus() == 400);
     }
 }
