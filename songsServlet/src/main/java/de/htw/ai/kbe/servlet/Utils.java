@@ -14,14 +14,22 @@ import java.util.Map;
 import static de.htw.ai.kbe.servlet.Constants.*;
 
 class Utils {
-    void sendResponse(HttpServletResponse response, int status, String message) throws IOException {
-        response.setStatus(status);
-        response.setContentType(JSON_CONTENT_TYPE);
-        response.setCharacterEncoding(ENCODING);
-        response.getWriter().println(message);
+    private Utils() {
+    }
+    // private constructor to avoid unnecessary instantiation of the class
+
+    static void sendResponse(HttpServletResponse response, int status, String message) {
+        try {
+            response.setStatus(status);
+            response.setContentType(JSON_CONTENT_TYPE);
+            response.setCharacterEncoding(ENCODING);
+            response.getWriter().println(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    boolean isInteger(String string) {
+    static boolean isInteger(String string) {
         try {
             Integer.parseInt(string);
         } catch (NumberFormatException e) {
@@ -33,20 +41,15 @@ class Utils {
         return true;
     }
 
-    boolean requestAcceptHeaderOk(String acceptHeader) {
+    static boolean requestAcceptHeaderOk(String acceptHeader) {
         return (stringOk(acceptHeader) && ((JSON_CONTENT_TYPE.equals(acceptHeader) || "*".equals(acceptHeader))));
     }
 
-    /**
-     * @param str acceptHeader
-     * @return true if not null and not empty
-     */
-    boolean stringOk(final String str) {
+    static boolean stringOk(final String str) {
         return (str != null && !str.trim().isEmpty());
     }
 
-    //TODO why not simply request.getParameterMap()?
-    Map<String, String> getRequestParams(HttpServletRequest request) {
+    static Map<String, String> getRequestParams(HttpServletRequest request) {
         Map<String, String> acc = new HashMap<>();
         Enumeration<String> paramsEnum = request.getParameterNames();
 
@@ -59,7 +62,7 @@ class Utils {
     }
 
     // from jaxbjackson
-    List<Song> readJSONToSongs(String filename) throws IOException {
+    static List<Song> readJSONToSongs(String filename) throws FileNotFoundException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         try (InputStream is = new BufferedInputStream(new FileInputStream(filename))) {
             return (List<Song>) objectMapper.readValue(is, new TypeReference<List<Song>>() {
@@ -67,21 +70,11 @@ class Utils {
         }
     }
 
-    /*// Write a List<Song> into a JSON-file. from jaxbjackson
-    void writeSongsToJSON(List<Song> songs, String filename) throws IOException {
+    // Write a List<Song> into a JSON-file. from jaxbjackson
+    static void writeSongsToJSON(List<Song> songs, String filename) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         try (OutputStream os = new BufferedOutputStream(new FileOutputStream(filename))) {
             objectMapper.writeValue(os, songs);
         }
-    }*/
-
-    boolean jsonStructureOk(Map jsonMap) {
-        boolean keysOk = jsonMap.containsKey("title") && jsonMap.containsKey("artist") && jsonMap.containsKey("album")
-                && jsonMap.containsKey("released");
-        boolean valuesOk = jsonMap.get("released") instanceof Integer;
-        return keysOk && valuesOk;
     }
-
-
 }
-

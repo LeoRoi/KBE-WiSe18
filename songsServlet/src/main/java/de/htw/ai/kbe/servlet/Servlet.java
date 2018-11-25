@@ -15,18 +15,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static de.htw.ai.kbe.servlet.Constants.*;
+import static de.htw.ai.kbe.servlet.Utils.*;
+
 public class Servlet extends HttpServlet {
     private String jsonPath;
     private Queue<Song> songs;
     private AtomicInteger counter;
     private ObjectMapper objectMapper;
-    private Utils utils;
 
     public Servlet() {
-        songs = new ConcurrentLinkedQueue<>();     // concurrentLinkedQueue is concurrent and synchronized unlike synchronizedList(List)
-        counter = new AtomicInteger();             // Counter of the song IDs, atomic for Thread safety
+        songs = new ConcurrentLinkedQueue<>();
+        counter = new AtomicInteger();
         objectMapper = new ObjectMapper();
-        utils = new Utils();
     }
 
     String getJsonPath() {
@@ -37,105 +38,80 @@ public class Servlet extends HttpServlet {
         return songs;
     }
 
-    AtomicInteger getCounter() {
-        return counter;
-    }
-
-    /**
-     * loads the external songs.json file and sets the songId counter
-     * @param servletConfig
-     */
     @Override
     public void init(ServletConfig servletConfig) {
         jsonPath = servletConfig.getInitParameter("jsonPath");
 
         try {
-            songs.addAll(utils.readJSONToSongs(jsonPath));
+            songs.addAll(readJSONToSongs(jsonPath));
             counter.set(songs.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        System.out.println("Servlet is up and running!");
     }
 
-    /**
-     * Responds to a http get request with a http response including either all songs
-     * or the requested song.
-     * @param request
-     * @param response
-     */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
-            if (utils.requestAcceptHeaderOk(request.getHeader("accept"))) {
-                Map<String, String> headerParams = utils.getRequestParams(request);
+            if (requestAcceptHeaderOk(request.getHeader("accept"))) {
+                Map<String, String> headerParams = getRequestParams(request);
 
                 if (headerParams.get("all") != null) {
-                    utils.sendResponse(response, 200, objectMapper.writeValueAsString(songs));
+                    sendResponse(response, 200, objectMapper.writeValueAsString(songs));
                 } else if (headerParams.get("songId") != null) {
-                    if (!utils.isInteger(headerParams.get("songId"))) {
-                        utils.sendResponse(response, 400, "Could not interpret given id!");
+                    if (!isInteger(headerParams.get("songId"))) {
+                        sendResponse(response, 400, "Could not interpret given id!");
                         return;
                     }
 
                     int id = Integer.parseInt(headerParams.get("songId"));
                     if (id > counter.get()) {
-                        utils.sendResponse(response, 404, "Song with <id=" + id + "> not found!");
+                        sendResponse(response, 404, "Song with <id=" + id + "> not found!");
                     } else {
                         for (Song song : songs) {
                             if (song.getId() == id) {
-                                utils.sendResponse(response, 200, objectMapper.writeValueAsString(song));
+                                sendResponse(response, 200, objectMapper.writeValueAsString(song));
                                 break;
                             }
                         }
                     }
                 } else {
-                    utils.sendResponse(response, 406, "Could not interpret given parameters!");
+                    sendResponse(response, 406, "Could not interpret given parameters!");
                 }
             } else {
-                utils.sendResponse(response, 406, "Could not interpret given header <" + request.getHeader("accept") + ">!");
+                sendResponse(response, 406, "Could not interpret given header <" + request.getHeader("accept") + ">!");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    /** generate new ID for a song and store it in the songs list. respond to client with new id in location header.
-     * Only accepts json as payload.
-     * @Source https://stackoverflow.com/questions/14291027/what-is-the-use-of-response-setcontenttypetext-html-in-servlet#14291042
-     * @param request
-     * @param response
-     * @throws IOException
-     */
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (request.getContentType().equals(Constants.JSON_CONTENT_TYPE)) {
-            try (ServletInputStream inputStream = request.getInputStream()) {
-                Map<String, Object> jsonMap =
-                        objectMapper.readValue(inputStream, new TypeReference<Map<String, Object>>(){});
-                if (utils.jsonStructureOk(jsonMap)) {
-                    Song song = objectMapper.convertValue(jsonMap, new TypeReference<Song>() {});
-                    //Song song = (Song) objectMapper.readValue(inputStream, new TypeReference<Song>() {});
-                    song.setId(counter.getAndIncrement());
-                    songs.add(song);
-                    try {
-                        response.setHeader("Location", "http://localhost:8080/songsServlet?songId="+counter);
-                        response.setStatus(200);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+    public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            if (request.getContentType() == null) {
+                sendResponse(response, 406, "Content type is not declared!");
+                return;
+            }
+            if (request.getContentType().equals(JSON_CONTENT_TYPE)) {
+                String requestedContentType = request.getHeader("Content-Type");
+                if (requestedContentType.equals("") || requestedContentType.equals("null")) {
+                    System.out.println("if (requestedContentType.equals(\"\") || requestedContentType.equals(\"null\")) {");
+                    sendResponse(response, 406, "Could not interpret given header!");
                 } else {
-                    response.sendError(400, "The payload has not the right JSON structure.");
+                    Song newSong = objectMapper.readValue(request.getInputStream(), new TypeReference<Song>(){});
+                    newSong.setId(counter.incrementAndGet());
+                    songs.add(newSong);
+                    response.addHeader("Location", "http://localhost:8080/songsServlet?songId=" + counter.get());
+                    sendResponse(response, 201, "New " + newSong.toString());
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } else {
+                sendResponse(response, 406, "Could not interpret given content type!");
             }
-        } else {
-            try {
-                response.sendError(400, "Only JSON format is accepted");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            sendResponse(response, 406, "Could not interpret JSON body!");
         }
     }
 
@@ -143,19 +119,9 @@ public class Servlet extends HttpServlet {
     public void destroy() {
         try {
             objectMapper.writeValue(new File(jsonPath), songs);
-            System.out.println("Servlet Exited!");
-        } catch (UnsupportedOperationException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-/*    @Override
-    public void destroy() {
-        try {
-            utils.writeSongsToJSON((List<Song>) getSongs(), jsonPath);
+            System.out.println("Servlet terminated after saving songs to <" + jsonPath + ">!");
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
-
+    }
 }
