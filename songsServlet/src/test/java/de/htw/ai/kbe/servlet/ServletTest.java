@@ -1,6 +1,7 @@
 package de.htw.ai.kbe.servlet;
 
 import static de.htw.ai.kbe.servlet.Constants.*;
+import static de.htw.ai.kbe.servlet.Utils.stringOk;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -13,6 +14,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class ServletTest {
@@ -21,7 +23,6 @@ public class ServletTest {
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
     private ObjectMapper objectMapper;
-    private Utils utils;
 
     @Before
     public void setUp() throws ServletException {
@@ -38,7 +39,7 @@ public class ServletTest {
 
     @Test
     public void initPath() {
-        assert(utils.stringOk(servlet.getJsonPath()));
+        assert(stringOk(servlet.getJsonPath()));
         System.out.println("jsonPath = " + servlet.getJsonPath());
     }
 
@@ -100,5 +101,38 @@ public class ServletTest {
         servlet.doGet(request, response);
         assert(response.getStatus() == 400);
         assertEquals("Could not interpret given id!", response.getContentAsString().trim());
+    }
+
+    @Test
+    public void postSong() {
+        int counter = servlet.getCounter().get();
+        request.setContentType(JSON_CONTENT_TYPE);
+        request.setContent(Constants.songWithId10.getBytes());
+        servlet.doPost(request, response);
+
+        assert (response.getStatus() == 201);
+        assertEquals(counter+1, servlet.getCounter().get());
+    }
+
+    @Test
+    public void postNotJsonPayload() {
+        request.setContentType("html");
+        request.setContent(Constants.songWithId10.getBytes());
+        servlet.doPost(request, response);
+        assert (response.getStatus() == 400);
+    }
+
+    @Test
+    public void postSongWithWrongJsonStructure() {
+        String songWithWrongJsonStructure = "{\n" +
+                "\"band\" : \"Metallica\",\n" +
+                "\"instrument\" : \"Guitar\",\n" +
+                "\"album\" : \"First Album\",\n" +
+                "\"released\" : 2017\n" +
+                "}";
+        request.setContentType(JSON_CONTENT_TYPE);
+        request.setContent(songWithWrongJsonStructure.getBytes());
+        servlet.doPost(request, response);
+        assert (response.getStatus() == 400);
     }
 }

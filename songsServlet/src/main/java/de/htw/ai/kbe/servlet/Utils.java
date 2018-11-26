@@ -77,4 +77,11 @@ class Utils {
             objectMapper.writeValue(os, songs);
         }
     }
+
+    static boolean jsonStructureOk(Map jsonMap) {
+        boolean keysOk = jsonMap.containsKey("title") && jsonMap.containsKey("artist") && jsonMap.containsKey("album")
+                && jsonMap.containsKey("released");
+        boolean valuesOk = jsonMap.get("released") instanceof Integer;
+        return keysOk && valuesOk;
+    }
 }
