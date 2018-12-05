@@ -28,6 +28,7 @@ public class SongsWebService {
         return handler.getAllSongs();
     }
 
+    // curl -X GET -H "Accept: application/json" -v "http://localhost:8080/songsRX/rest/songs/1"
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
