@@ -9,5 +9,5 @@ public interface iSongsHandler {
     Collection<Song> getAllSongs();
     void addSong(Song song);
     boolean updateSong(Song song);
-    Song deleteSong(int id);
+    boolean deleteSong(int id);
 }

@@ -12,6 +12,14 @@ public class Song {
 
     public Song(){}
 
+    public Song(int id, String title, String artist, String album, int released) {
+        this.id = id;
+        this.title = title;
+        this.artist = artist;
+        this.album = album;
+        this.released = released;
+    }
+
     public int getId() {
         return id;
     }
