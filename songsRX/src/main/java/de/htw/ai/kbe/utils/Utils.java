@@ -17,7 +17,7 @@ public class Utils {
 
         songs.add(new Song(0, "Black", "Stones", "Best", 1990));
         songs.add(new Song(1, "Can’t Stop the Feeling", "Justin Timberlake", "Trolls", 2016));
-        songs.add(new Song(2, "Sun", "God", "Trans", -11990));
+        songs.add(new Song(22, "Sun", "God", "Trans", -11990));
         songs.add(new Song(3, "Team", "Iggy", "Baby", 2015));
 
         return songs;
@@ -38,8 +38,7 @@ public class Utils {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try (InputStream is = classloader.getResourceAsStream(filename)) {
-            return (List<Song>) objectMapper.readValue(is, new TypeReference<List<Song>>() {
-            });
+            return (List<Song>) objectMapper.readValue(is, new TypeReference<List<Song>>() {});
         } catch (Exception e) {
             e.printStackTrace();
             return Collections.emptyList();

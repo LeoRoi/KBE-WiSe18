@@ -8,6 +8,6 @@ public interface iSongsHandler {
     Song getSong(int id);
     Collection<Song> getAllSongs();
     void addSong(Song song);
-    boolean updateSong(Song song);
+    boolean updateSong(int id, Song song);
     boolean deleteSong(int id);
 }

@@ -42,7 +42,7 @@ public class SongsHandler implements iSongsHandler {
         List<Song> songs = loadTestSongs();
 
         for (Song song : songs) {
-            storage.put(counter.getAndIncrement(), song);
+            storage.put(song.getId(), song);
         }
     }
 
@@ -62,15 +62,17 @@ public class SongsHandler implements iSongsHandler {
         return storage.values();
     }
 
+    // id based on counter
     public void addSong(Song song) {
         storage.put(counter.incrementAndGet(), song);
     }
 
-    public boolean updateSong(Song newSong) {
-        Song song = storage.remove(newSong.getId());
+    // take id from url, update content according to the payload
+    public boolean updateSong(int id, Song newSong) {
+        Song song = storage.remove(id);
 
         if (song != null) {
-            storage.put(newSong.getId(), newSong);
+            storage.put(id, newSong);
             return true;
         } else {
             return false;
