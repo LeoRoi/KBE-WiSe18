@@ -15,31 +15,10 @@ public class Utils {
     public static List<Song> loadTestSongs() {
         List<Song> songs = new ArrayList<>();
 
-        Song song = new Song();
-        song.setId(0);
-        song.setArtist("Stone");
-        song.setAlbum("Best of the best");
-        song.setReleased(1990);
-        song.setTitle("Black");
-        songs.add(song);
-
-        song = new Song();
-        song.setId(1);
-        song.setTitle("the feeling");
-        song.setArtist("justin");
-        song.setAlbum("troll");
-        song.setReleased(2016);
-        songs.add(song);
-
-        song = new Song();
-        song.setId(2);
-        song.setTitle("mom");
-        song.setArtist("megan");
-        song.setAlbum("thx");
-        song.setReleased(2018);
-        songs.add(song);
-
-        songs.add(new Song(3, "team", "iggy", "null", 2015));
+        songs.add(new Song(0, "Black", "Stones", "Best", 1990));
+        songs.add(new Song(1, "Can’t Stop the Feeling", "Justin Timberlake", "Trolls", 2016));
+        songs.add(new Song(2, "Sun", "God", "Trans", -11990));
+        songs.add(new Song(3, "Team", "Iggy", "Baby", 2015));
 
         return songs;
     }
@@ -50,6 +29,20 @@ public class Utils {
         try (InputStream is = new BufferedInputStream(new FileInputStream(filename))) {
             return (List<Song>) objectMapper.readValue(is, new TypeReference<List<Song>>() {
             });
+        }
+    }
+
+    // https://stackoverflow.com/questions/15749192/how-do-i-load-a-file-from-resource-folder
+    public static List<Song> jsonToSongsList(String filename) {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try (InputStream is = classloader.getResourceAsStream(filename)) {
+            return (List<Song>) objectMapper.readValue(is, new TypeReference<List<Song>>() {
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
         }
     }
 }
