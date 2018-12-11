@@ -18,8 +18,16 @@ public class SongsHandler implements iSongsHandler {
         return storage;
     }
 
+    public int getStorageSize() {
+        return storage.size();
+    }
+
     public AtomicInteger getCounter() {
         return counter;
+    }
+
+    public int getCounterValue() {
+        return counter.get();
     }
 
     public SongsHandler() {
@@ -28,16 +36,11 @@ public class SongsHandler implements iSongsHandler {
         initTest();
     }
 
-    public SongsHandler(String jsonFile) {
-        this.storage = new ConcurrentHashMap<Integer, Song>();
-        this.counter = new AtomicInteger();
-
-        init(jsonFile);
-//        for (Song song : jsonToSongsList(jsonFile))
-//            storage.put(counter.getAndIncrement(), song);
-    }
-
-    // if no file name provided, load some hard coded songs
+    /*
+    if no file name provided, load some hard coded songs
+    do not init counter
+    use id from payload for map
+     */
     void initTest() {
         List<Song> songs = loadTestSongs();
 
@@ -46,12 +49,18 @@ public class SongsHandler implements iSongsHandler {
         }
     }
 
+    public SongsHandler(String jsonFile) {
+        this.storage = new ConcurrentHashMap<Integer, Song>();
+        this.counter = new AtomicInteger();
+        init(jsonFile);
+    }
+
     void init(String jsonName) {
+        counter.set(0);
+
         for (Song song : jsonToSongsList(jsonName)) {
-//            storage.put(counter.getAndIncrement(), song);
-            storage.put(song.getId(), song);
+            storage.put(counter.getAndIncrement(), song);
         }
-        counter.set(storage.size());
     }
 
     public Song getSong(int id) {
@@ -62,9 +71,17 @@ public class SongsHandler implements iSongsHandler {
         return storage.values();
     }
 
+    public void printSong(int i) {
+        System.out.println(i + " = " + storage.get(i));
+    }
+
+    public void printAllSongs() {
+        System.out.println(storage);
+    }
+
     // id based on counter
-    public void addSong(Song song) {
-        storage.put(counter.incrementAndGet(), song);
+    public void addSong(Song newSong) {
+        storage.put(counter.incrementAndGet(), newSong);
     }
 
     // take id from url, update content according to the payload

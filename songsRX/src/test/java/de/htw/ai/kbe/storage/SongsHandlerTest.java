@@ -26,8 +26,12 @@ public class SongsHandlerTest {
     @Test
     public void initSuccessful() {
         int size = handler.getStorage().size();
-        assert(size == 11);
-        assertTrue(handler.getStorage().size() == handler.getCounter().get());
+        assert(11 == size);
+        // size and counter are equal cos counter is incremented after each use
+        assert(size == handler.getCounterValue());
+
+        System.out.println("map size = " + size);
+        System.out.println("counter = " + handler.getCounterValue());
         System.out.println(size + " songs loaded:\n" + handler.getAllSongs());
     }
 
@@ -40,12 +44,12 @@ public class SongsHandlerTest {
     // song 1 is the same in both sources
     @Test
     public void getSongSuccessful() {
-        Song songFromFile = handler.getSong(1);
+        Song songFromFile = handler.getSong(9);
         Song testSong = testHandler.getSong(1);
 
-        System.out.println("Song <1> from the file should be equal to the song <1> from the test:");
-        System.out.println("Song <1> from the file: " + songFromFile);
-        System.out.println("Song <1> from the test: " + testSong);
+        System.out.println("Song from file and test should be equal:");
+        System.out.println(songFromFile);
+        System.out.println(testSong);
 
         assertEquals(testSong.getTitle(), songFromFile.getTitle());
         assertEquals(testSong.getArtist(), songFromFile.getArtist());
@@ -62,30 +66,58 @@ public class SongsHandlerTest {
     @Test
     public void addSong() {
         Song newSong = new Song(0, "Black", "Bones", "Best", 1990);
-        int sizeBeforeAddingNewSong = handler.getStorage().size();
-        handler.addSong(newSong);
+        int sizeBefore = handler.getStorage().size();
+        System.out.println("size before: " + sizeBefore);
+        System.out.println("storage(" + sizeBefore + ") = " + handler.getSong(sizeBefore));
+        System.out.println(handler.getAllSongs());
+        System.out.println();
 
-        assertTrue(handler.getStorage().size() == sizeBeforeAddingNewSong+1);
-        System.out.println("storage(" + handler.getCounter().get() + ") = " + newSong);
+        handler.addSong(newSong);
+        int newSize = handler.getStorage().size();
+        System.out.println("storage(" + newSize + ") = " + handler.getSong(newSize));
+        System.out.println("size after: " + handler.getStorage().size());
+        System.out.println(handler.getAllSongs());
+        assert(handler.getStorage().size() == sizeBefore+1);
     }
 
     @Test
-    public void updateSong() {
-        int id = 11;
+    public void updateSongOk() {
+        int lastId = handler.getStorageSize() - 1;
+        System.out.println("last song song before: " + handler.getSong(lastId));
+        Song newSong = new Song(22, "Sun", "God", "Trans", -11990);
+
+        assertTrue(handler.updateSong(lastId, newSong));
+        assertEquals(testHandler.getStorage().get(22).toString(), handler.getSong(lastId).toString());
+        System.out.println("last song after = " + handler.getSong(lastId));
+    }
+
+    @Test
+    public void updateSongFail() {
+        int id = 1111;
+        Song newSong = new Song(22, "Sun", "God", "Trans", -11990);
+        assertFalse(handler.updateSong(id, newSong));
+    }
+
+    @Test
+    public void deleteSongOk() {
+        int sizeBefore = handler.getStorage().size();
+        int id = sizeBefore-1;
         System.out.println("Song(" + id + ") before: " + handler.getSong(id));
 
-        Song newSong = new Song(22, "Sun", "God", "Trans", -11990);
-        handler.updateSong(id, newSong);
+        handler.deleteSong(id);
+        handler.deleteSong(1);
+        assert(9 == sizeBefore-2);
 
-        assertEquals(testHandler.getStorage().get(22).toString(), handler.getSong(id).toString());
         System.out.println("Song(" + id + ") after: " + handler.getSong(id));
+        assertNull(handler.getSong(id));
     }
 
     @Test
-    public void deleteSong() {
+    public void deleteSongFail() {
         int sizeBefore = handler.getStorage().size();
-        handler.deleteSong(11);
-        handler.deleteSong(1);
-        assert(9 == sizeBefore-2);
+        int id = 1111;
+
+        assertFalse(handler.deleteSong(id));
+        assert(sizeBefore == handler.getStorageSize());
     }
 }
