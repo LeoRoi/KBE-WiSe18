@@ -28,77 +28,22 @@ public class SongsHandler implements ISongsHandler {
     }
 
     public SongsHandler() {
-        this.storage = new ConcurrentHashMap<>();
-        this.counter = new AtomicInteger();
-        initTest();
+        this(jsonToSongsList("songs10.json"));
+        System.out.println("default constructor OK");
     }
 
-    /*
-    if no file name provided, load some hard coded songs
-    do not init counter
-    use id from payload for map
-     */
-    void initTest() {
-        List<Song> songs = loadTestSongs();
+    public SongsHandler(List<Song> songs) {
+        this.storage = new ConcurrentHashMap<Integer, Song>();
+        this.counter = new AtomicInteger();
 
         for (Song song : songs) {
             storage.put(song.getId(), song);
         }
+
+        counter.set(songs.size());
+//        printAllSongs();
+        System.out.println("SongsHandler init OK");
     }
-
-    public SongsHandler(String jsonFile) {
-        this.storage = new ConcurrentHashMap<Integer, Song>();
-        this.counter = new AtomicInteger();
-        init(jsonFile);
-    }
-
-    void init(String jsonName) {
-        counter.set(0);
-
-        for (Song song : jsonToSongsList(jsonName)) {
-            storage.put(counter.getAndIncrement(), song);
-        }
-            initJson();
-    }
-
-    /*void init() {
-        List<Song> songs = loadSongs();
-
-        for (Song song : songs) {
-            de.htw.ai.kbe.storage.put(counter.getAndIncrement(), song);
-        }
-    }*/
-
-    private void initJson() {
-        List<Song> songs;
-        ClassLoader classLoader = getClass().getClassLoader();
-        String pathToSongs = Objects.requireNonNull(classLoader.getResource("songs.json")).getPath();
-
-        try {
-            songs = readJSONToSongs(pathToSongs);
-
-            for(Song song : songs) {
-                addSong(song);
-            }
-            counter.set(storage.size());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /*void init() {
-        List<Song> songs;
-
-        try {
-            songs = readJSONToSongs("songs.json");  //TODO fix path to songs.json
-
-            for(Song song : songs) {
-                de.htw.ai.kbe.storage.put(counter.getAndIncrement(), song);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
     public Song getSong(int id) {
         return storage.get(id);

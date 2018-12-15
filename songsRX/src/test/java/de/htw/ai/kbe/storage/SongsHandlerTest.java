@@ -4,30 +4,40 @@ import de.htw.ai.kbe.data.Song;
 import org.junit.Before;
 import org.junit.Test;
 
+import static de.htw.ai.kbe.utils.Utils.*;
 import static org.junit.Assert.*;
 
 public class SongsHandlerTest {
     SongsHandler handler;
-    TestSongsHandler testHandler;
+    SongsHandlerT testHandler;
 
     @Before
     public void setUp() {
-        testHandler = new TestSongsHandler();
-        handler = new SongsHandler("songs.json");
+        testHandler = new SongsHandlerT();
+        handler = new SongsHandler(jsonToSongsList("songs11.json"));
     }
 
     @Test
     public void initFails() {
-        SongsHandler h = new SongsHandler("s0ngs.json");
-        assertTrue(h.getStorage().isEmpty());
+        SongsHandler h = new SongsHandler(jsonToSongsList("s0ngs.json"));
+        assert(h.getStorage().size() == 4);
         System.out.println("songs loaded:\n" + h.getAllSongs());
     }
 
     @Test
-    public void initSuccessful() {
+    public void initWithTenSongs() {
+        SongsHandler h = new SongsHandler();
+        System.out.println("songs loaded:\n" + h.getAllSongs());
+        assert(h.getStorage().size() == 10);
+    }
+
+    @Test
+    public void initWithElevenSongs() {
+        handler.printAllSongs();
+        System.out.println("counter = " + handler.getCounterValue());
         int size = handler.getStorage().size();
+
         assert(11 == size);
-        // size and counter are equal cos counter is incremented after each use
         assert(size == handler.getCounterValue());
 
         System.out.println("map size = " + size);
@@ -44,10 +54,10 @@ public class SongsHandlerTest {
     // song 1 is the same in both sources
     @Test
     public void getSongSuccessful() {
-        Song songFromFile = handler.getSong(9);
+        Song songFromFile = handler.getSong(1);
         Song testSong = testHandler.getSong(1);
 
-        System.out.println("Song from file and test should be equal:");
+        System.out.println(">> Song from file and test should be equal:");
         System.out.println(songFromFile);
         System.out.println(testSong);
 

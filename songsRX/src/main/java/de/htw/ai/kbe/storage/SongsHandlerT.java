@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static de.htw.ai.kbe.utils.Utils.*;
 
-public class TestSongsHandler implements ISongsHandler {
+public class SongsHandlerT implements ISongsHandler {
     private Map<Integer, Song> storage;
     private AtomicInteger counter;
 
@@ -27,7 +27,7 @@ public class TestSongsHandler implements ISongsHandler {
         return counter.get();
     }
 
-    public TestSongsHandler() {
+    public SongsHandlerT() {
         this.storage = new ConcurrentHashMap<>();
         this.counter = new AtomicInteger();
         initTest();
