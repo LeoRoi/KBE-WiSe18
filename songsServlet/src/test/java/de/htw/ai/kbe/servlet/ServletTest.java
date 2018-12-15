@@ -1,6 +1,7 @@
 package de.htw.ai.kbe.servlet;
 
 import static de.htw.ai.kbe.servlet.Constants.*;
+import static de.htw.ai.kbe.servlet.Utils.stringOk;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -22,7 +23,6 @@ public class ServletTest {
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
     private ObjectMapper objectMapper;
-    private Utils utils;
 
     @Before
     public void setUp() throws ServletException {
@@ -39,7 +39,7 @@ public class ServletTest {
 
     @Test
     public void initPath() {
-        assert(utils.stringOk(servlet.getJsonPath()));
+        assert(stringOk(servlet.getJsonPath()));
         System.out.println("jsonPath = " + servlet.getJsonPath());
     }
 
@@ -103,27 +103,27 @@ public class ServletTest {
         assertEquals("Could not interpret given id!", response.getContentAsString().trim());
     }
 
-
     @Test
-    public void postSong() throws IOException {
+    public void postSong() {
+        int counter = servlet.getCounter().get();
         request.setContentType(JSON_CONTENT_TYPE);
         request.setContent(Constants.songWithId10.getBytes());
         servlet.doPost(request, response);
-        assert (response.getStatus() == 200);
-        //assert (response.getHeader("songId").equals(servlet.getCounter()));
+
+        assert (response.getStatus() == 201);
+        assertEquals(counter+1, servlet.getCounter().get());
     }
 
     @Test
-    public void postNotAJsonPayload() throws IOException {
+    public void postNotJsonPayload() {
         request.setContentType("html");
         request.setContent(Constants.songWithId10.getBytes());
         servlet.doPost(request, response);
         assert (response.getStatus() == 400);
-
     }
 
     @Test
-    public void postSongWithWrongJsonStructure() throws IOException {
+    public void postSongWithWrongJsonStructure() {
         String songWithWrongJsonStructure = "{\n" +
                 "\"band\" : \"Metallica\",\n" +
                 "\"instrument\" : \"Guitar\",\n" +
@@ -132,21 +132,6 @@ public class ServletTest {
                 "}";
         request.setContentType(JSON_CONTENT_TYPE);
         request.setContent(songWithWrongJsonStructure.getBytes());
-        servlet.doPost(request, response);
-        assert (response.getStatus() == 400);
-    }
-
-    @Test
-    public void postSongWithDiffrentCharacters() throws IOException {
-        //TODO probably needs another check for datatype
-        String songWithDiffrentValues = "{\n" +
-                "\"title\" : \"1234\",\n" +
-                "\"artist\" : \"++#A\",\n" +
-                "\"album\" : \"\",\n" +
-                "\"released\" : Ad\n" +
-                "}";
-        request.setContentType(JSON_CONTENT_TYPE);
-        request.setContent(songWithDiffrentValues.getBytes());
         servlet.doPost(request, response);
         assert (response.getStatus() == 400);
     }

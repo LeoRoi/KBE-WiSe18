@@ -1,5 +1,6 @@
 package de.htw.ai.kbe.servlet;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -27,7 +28,9 @@ public class Servlet extends HttpServlet {
     public Servlet() {
         songs = new ConcurrentLinkedQueue<>();
         counter = new AtomicInteger();
+
         objectMapper = new ObjectMapper();
+        objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
     }
 
     String getJsonPath() {
@@ -36,6 +39,10 @@ public class Servlet extends HttpServlet {
 
     Queue<Song> getSongs() {
         return songs;
+    }
+
+    AtomicInteger getCounter() {
+        return counter;
     }
 
     @Override
@@ -89,29 +96,33 @@ public class Servlet extends HttpServlet {
     }
 
     @Override
-    public synchronized void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            if (request.getContentType() == null) {
-                sendResponse(response, 406, "Content type is not declared!");
-                return;
-            }
-            if (request.getContentType().equals(JSON_CONTENT_TYPE)) {
-                String requestedContentType = request.getHeader("Content-Type");
-                if (requestedContentType.equals("") || requestedContentType.equals("null")) {
-                    System.out.println("if (requestedContentType.equals(\"\") || requestedContentType.equals(\"null\")) {");
-                    sendResponse(response, 406, "Could not interpret given header!");
-                } else {
-                    Song newSong = objectMapper.readValue(request.getInputStream(), new TypeReference<Song>(){});
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getContentType().equals(Constants.JSON_CONTENT_TYPE)) {
+            try (ServletInputStream inputStream = request.getInputStream()) {
+                Map<String, Object> jsonMap =
+                        objectMapper.readValue(inputStream, new TypeReference<Map<String, Object>>(){});
+                if (jsonStructureOk(jsonMap)) {
+                    Song newSong = objectMapper.convertValue(jsonMap, new TypeReference<Song>() {});
                     newSong.setId(counter.incrementAndGet());
                     songs.add(newSong);
-                    response.addHeader("Location", "http://localhost:8080/songsServlet?songId=" + counter.get());
-                    sendResponse(response, 201, "New " + newSong.toString());
+                    try {
+                        response.setHeader("Location", "http://localhost:8080/songsServlet?songId="+counter);
+                        response.setStatus(201);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    response.sendError(400, "The payload has not the right JSON structure.");
                 }
-            } else {
-                sendResponse(response, 406, "Could not interpret given content type!");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            sendResponse(response, 406, "Could not interpret JSON body!");
+        } else {
+            try {
+                response.sendError(400, "Only JSON format is accepted");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
