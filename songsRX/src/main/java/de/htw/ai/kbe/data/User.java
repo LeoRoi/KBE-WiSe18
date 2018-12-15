@@ -13,37 +13,6 @@ public class User {
     public User() {
     }
 
-    // Example of a builder:
-   /* public static class Builder {
-        // required parameter
-        private Integer id;
-        private String userId;
-        // optional parameters
-        private String firstName;
-        private String lastName;
-        public Builder(Integer id, String userId) {
-            this.id = id;
-            this.userId = userId;
-        }
-        public Builder firstName(String val) {
-            firstName = val;
-            return this;
-        }
-        public Builder lastName(String val) {
-            lastName = val;
-            return this;
-        }
-        public User build() {
-            return new User(this);
-        }
-    }
-    private User(Builder builder) {
-        this.id = builder.id;
-        this.userId = builder.userId;
-        this.firstName = builder.firstName;
-        this.lastName = builder.lastName;
-    }*/
-
     // also needed for JAXB
     public Integer getId() {
         return id;

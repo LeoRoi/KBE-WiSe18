@@ -8,11 +8,11 @@ import static org.junit.Assert.*;
 
 public class SongsHandlerTest {
     SongsHandler handler;
-    SongsHandler testHandler;
+    TestSongsHandler testHandler;
 
     @Before
     public void setUp() {
-        testHandler = new SongsHandler();
+        testHandler = new TestSongsHandler();
         handler = new SongsHandler("songs.json");
     }
 

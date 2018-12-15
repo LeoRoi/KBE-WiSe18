@@ -4,5 +4,4 @@ import java.util.Map;
 
 public interface IUsersHandler {
     Map<String, String> getStorage();
-
 }

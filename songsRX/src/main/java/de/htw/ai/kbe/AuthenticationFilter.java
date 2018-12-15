@@ -53,6 +53,4 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         }
         return false;
     }
-
-
 }

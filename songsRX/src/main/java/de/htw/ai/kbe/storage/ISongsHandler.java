@@ -4,7 +4,7 @@ import de.htw.ai.kbe.data.Song;
 
 import java.util.Collection;
 
-public interface iSongsHandler {
+public interface ISongsHandler {
     Song getSong(int id);
     Collection<Song> getAllSongs();
     int addSong(Song song);

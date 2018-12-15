@@ -10,7 +10,8 @@ public class Song {
     private String album;
     private int released;
 
-    public Song(){}
+    public Song() {
+    }
 
     public Song(int id, String title, String artist, String album, int released) {
         this.id = id;
@@ -48,9 +49,7 @@ public class Song {
         this.title = title;
     }
 
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
+    public void setArtist(String artist) { this.artist = artist; }
 
     public void setAlbum(String album) {
         this.album = album;
