@@ -14,17 +14,17 @@ import java.util.Collection;
 
 @Path("/songs")
 public class SongsWebService {
-    @Inject
+//    @Inject
     private iSongsHandler handler;
 
     @Context
     UriInfo uriInfo;
 
-//    @Inject
-//    public SongsWebService(iSongsHandler songsHandler) {
-//        super();
-//        handler = songsHandler;
-//    }
+    @Inject
+    public SongsWebService(iSongsHandler songsHandler) {
+        super();
+        handler = songsHandler;
+    }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
