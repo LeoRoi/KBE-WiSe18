@@ -62,10 +62,10 @@ public class SongsWebService {
     @PUT
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Path("/{id}")
-    public Response updateSong(@PathParam("id") int id, Song song) {
-        if (song.getId() == id) {
-            if (song.getTitle() != null) {
-                if (handler.updateSong(id, song)) {
+    public Response updateSong(@PathParam("id") int id, Song newSong) {
+        if (newSong.getId() == id) {
+            if (newSong.getTitle() != null) {
+                if (handler.updateSong(id, newSong)) {
                     return Response.status(204).build();
                 } else {
                     return Response.status(404, "Not found, the Song Id is not in the database.").build();

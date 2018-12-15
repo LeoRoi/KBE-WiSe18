@@ -1,7 +1,6 @@
-package de.htw.ai.kbe;
+package de.htw.ai.kbe.services;
 
 import de.htw.ai.kbe.data.Song;
-import de.htw.ai.kbe.services.SongsWebService;
 import de.htw.ai.kbe.storage.ISongsHandler;
 import de.htw.ai.kbe.storage.SongsHandler;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
