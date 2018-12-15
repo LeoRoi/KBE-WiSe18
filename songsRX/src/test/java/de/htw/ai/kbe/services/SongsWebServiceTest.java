@@ -6,13 +6,17 @@ import de.htw.ai.kbe.storage.SongsHandler;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 
 import javax.inject.Singleton;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Response;
+import java.net.URI;
 
 public class SongsWebServiceTest extends JerseyTest {
-
     private Song song;
 
     @Before
@@ -25,13 +29,13 @@ public class SongsWebServiceTest extends JerseyTest {
         song.setTitle("Breathless through the night");
     }
 
-   /* @Override
+    @Override
     protected Application configure() {
         return new ResourceConfig(SongsWebService.class);
-    }*/
+    }
 
 
-    @Override
+/*    @Override
     protected Application configure() {
         return new ResourceConfig(SongsWebService.class).register(new AbstractBinder() {
             @Override
@@ -39,18 +43,14 @@ public class SongsWebServiceTest extends JerseyTest {
                 bind(SongsHandler.class).to(ISongsHandler.class).in(Singleton.class);
             }
         });
-    }
+    }*/
 
-
-
-
-   /* @Override
+    @Override
     public URI getBaseUri() {
         return URI.create("http://localhost:8080/songsRX/rest");
     }
-*/
 
-   /* @Test
+    @Test
     public void putSongWithExistingIdShouldReturn204() {
         Response response = target("/songs/3").request().put(Entity.json(song));
         Assert.assertEquals(204, response.getStatus());
@@ -88,5 +88,4 @@ public class SongsWebServiceTest extends JerseyTest {
         Response response = target("/songs/50").request().put(Entity.json(song));
         Assert.assertEquals(406, response.getStatus());
     }
-*/
 }
