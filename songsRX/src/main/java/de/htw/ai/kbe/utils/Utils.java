@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.*;
 
 import de.htw.ai.kbe.data.Song;
+import de.htw.ai.kbe.data.User;
 
 public class Utils {
     private Utils() {}
@@ -43,5 +44,22 @@ public class Utils {
             e.printStackTrace();
             return Collections.emptyList();
         }
+    }
+
+    public static List<User> readJSONToUsers(String filename) throws FileNotFoundException, IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try (InputStream is = new BufferedInputStream(new FileInputStream(filename))) {
+            return (List<User>) objectMapper.readValue(is, new TypeReference<List<User>>() {
+            });
+        }
+    }
+
+    public static String generateToken() {
+        String token = "";
+        Random random = new Random();
+        for (int i = 0; i < 20; i++) {
+            token += (char) (random.nextInt(25) + 'a');
+        }
+        return token;
     }
 }

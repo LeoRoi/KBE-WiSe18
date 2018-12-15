@@ -80,8 +80,9 @@ public class SongsHandler implements iSongsHandler {
     }
 
     // id based on counter
-    public void addSong(Song newSong) {
+    public int addSong(Song newSong) {
         storage.put(counter.incrementAndGet(), newSong);
+        return counter.get();
     }
 
     // take id from url, update content according to the payload
