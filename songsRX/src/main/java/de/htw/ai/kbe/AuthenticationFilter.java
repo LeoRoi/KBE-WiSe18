@@ -44,6 +44,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 
     private boolean authenticate(String token) {
+        if (token == null) token = "-";
         //Map<String, String> tokenMap = UsersHandler.getInstance().getStorage();
         Map<String, String> tokenMap = handler.getStorage();
         if (tokenMap.containsValue(token)) {
