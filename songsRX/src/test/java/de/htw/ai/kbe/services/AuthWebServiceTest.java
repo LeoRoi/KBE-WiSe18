@@ -39,12 +39,12 @@ public class AuthWebServiceTest extends JerseyTest {
     }
 
     @Test
-    public void requestOfaUserWithTokenInDbReturns204() {
+    public void requestOfaUserWithTokenInDbReturns200() {
         //first Request is needed to generate the token
         Response response1 = target("/auth").queryParam("userId","mmuster").request().get();
         //second Request is needed to verify the already existing token
         Response response2 = target("/auth").queryParam("userId", "mmuster").request().get();
-        Assert.assertEquals(204, response2.getStatus());
+        Assert.assertEquals(200, response2.getStatus());
 
     }
 }

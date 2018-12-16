@@ -33,7 +33,10 @@ public class AuthWebService {
                 tokenBook.replace(userId, token);
                 return Response.status(200, "Here is a new Token").entity(token).build();
             } else {
-                return Response.status(204, "There is already a Token in use").build();
+                String alreadyExistingToken = tokenBook.get(userId);
+                return Response.status(200, "There is already a Token in use : " + alreadyExistingToken)
+                        .entity("There is already a Token in use : " + alreadyExistingToken)
+                        .build();
             }
         }
         return Response.status(403, "No Authorization").build();
