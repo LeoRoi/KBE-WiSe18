@@ -18,11 +18,11 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     private IUsersHandler handler;
 
-    /*@Inject
+    @Inject
     public AuthenticationFilter(IUsersHandler userHandler) {
         super();
         handler = userHandler;
-    }*/
+    }
 
     @Context
     private ResourceInfo resourceInfo;
@@ -45,8 +45,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     //TODO check out dependency injection
     private boolean authenticate(String token) {
-        Map<String, String> tokenMap = UsersHandler.getInstance().getStorage();
-        //Map<String, String> tokenMap = handler.getStorage();
+        //Map<String, String> tokenMap = UsersHandler.getInstance().getStorage();
+        Map<String, String> tokenMap = handler.getStorage();
         if (tokenMap.containsValue(token)) {
             System.out.println("authenticated");
             return true;

@@ -1,8 +1,8 @@
 package de.htw.ai.kbe.services;
 
 import de.htw.ai.kbe.data.Song;
-import de.htw.ai.kbe.storage.ISongsHandler;
 import de.htw.ai.kbe.storage.SongsHandler;
+import de.htw.ai.kbe.storage.ISongsHandler;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
@@ -14,23 +14,20 @@ import javax.inject.Singleton;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
-import java.net.URI;
 
 public class SongsWebServiceTest extends JerseyTest {
+
+   /* @Override
+    public URI getBaseUri() {
+        return URI.create("http://localhost:8080/songsRX/rest/auth");
+    }*/
+
     private Song song;
 
     @Override
-    protected Application configure() {
-        return new ResourceConfig(SongsWebService.class).register(new AbstractBinder() {
-            @Override
-            protected void configure() {
-                bind(SongsHandler.class).to(ISongsHandler.class).in(Singleton.class);
-            }
-        });
-    }
-
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        super.setUp();
         song = new Song();
         song.setId(3);
         song.setAlbum("Best of 2000");
@@ -40,8 +37,13 @@ public class SongsWebServiceTest extends JerseyTest {
     }
 
     @Override
-    public URI getBaseUri() {
-        return URI.create("http://localhost:8080/songsRX/rest");
+    protected Application configure() {
+        return new ResourceConfig(SongsWebService.class).register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(SongsHandler.class).to(ISongsHandler.class).in(Singleton.class);
+            }
+        });
     }
 
     @Test
@@ -55,12 +57,6 @@ public class SongsWebServiceTest extends JerseyTest {
         song.setId(100);
         Response response = target("/songs/100").request().put(Entity.json(song));
         Assert.assertEquals(404, response.getStatus());
-    }
-
-    @Test
-    public void putSongWithWrongMediaTypeShouldReturn406() {
-        Response response = target("/songs/3").request().put(Entity.text(song));
-        Assert.assertEquals(406, response.getStatus());
     }
 
     @Test
@@ -82,4 +78,6 @@ public class SongsWebServiceTest extends JerseyTest {
         Response response = target("/songs/50").request().put(Entity.json(song));
         Assert.assertEquals(406, response.getStatus());
     }
+
+
 }

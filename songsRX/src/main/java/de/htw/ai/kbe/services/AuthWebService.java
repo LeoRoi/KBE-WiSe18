@@ -15,18 +15,18 @@ public class AuthWebService {
 
     private IUsersHandler handler;
 
-    /*@Inject
+    @Inject
     public AuthWebService(IUsersHandler userHandler) {
         super();
         this.handler = userHandler;
-    }*/
+    }
 
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response checkToken(@QueryParam("userId") String userId) {
-        Map <String, String>tokenBook = UsersHandler.getInstance().getStorage();
-        //Map <String, String>tokenBook = handler.getStorage();             //TODO freaking di
+        //Map <String, String>tokenBook = UsersHandler.getInstance().getStorage();
+        Map <String, String>tokenBook = handler.getStorage();             //TODO freaking di
         if (tokenBook.containsKey(userId)) {
             if (tokenBook.get(userId).equals("x")) {        //TODO maybe change x to something more reasonable
                 String token = Utils.generateToken();
@@ -46,5 +46,4 @@ public class AuthWebService {
 
 //TODO dependency injection because UnsatisfiedDependencyException, can't find UsersHandler even tho it is bind() in dependency binder
 //TODO tests
-//TODO build in github changes
 //TODO check on get if the id exists because 404 is better then 204

@@ -9,6 +9,6 @@ public class DependencyBinder extends AbstractBinder {
     @Override
     protected void configure() {
         bind(SongsHandler.class).to(ISongsHandler.class).in(Singleton.class);
-        bind(UsersHandler.class).to(IUsersHandler.class);
+        bind(new UsersHandler()).to(IUsersHandler.class);
     }
 }

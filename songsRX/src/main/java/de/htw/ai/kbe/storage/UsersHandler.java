@@ -15,7 +15,7 @@ public class UsersHandler implements IUsersHandler {
     private static Map<String, String> storage;
 
 
-    private UsersHandler() {
+    public UsersHandler() {
         storage = new ConcurrentHashMap<>();
         //initSomeUsers();
         init();
