@@ -29,7 +29,7 @@ public class SongsHandler implements ISongsHandler {
 
     public SongsHandler() {
         this(jsonToSongsList("songs10.json"));
-        System.out.println("default constructor OK");
+//        System.out.println("default constructor OK");
     }
 
     public SongsHandler(List<Song> songs) {
@@ -42,7 +42,7 @@ public class SongsHandler implements ISongsHandler {
 
         counter.set(songs.size());
 //        printAllSongs();
-        System.out.println("SongsHandler init OK");
+//        System.out.println("SongsHandler init OK");
     }
 
     public Song getSong(int id) {
