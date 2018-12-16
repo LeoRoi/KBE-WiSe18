@@ -19,6 +19,16 @@ import java.net.URI;
 public class SongsWebServiceTest extends JerseyTest {
     private Song song;
 
+    @Override
+    protected Application configure() {
+        return new ResourceConfig(SongsWebService.class).register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(SongsHandler.class).to(ISongsHandler.class).in(Singleton.class);
+            }
+        });
+    }
+
     @Before
     public void setUp() {
         song = new Song();
@@ -28,22 +38,6 @@ public class SongsWebServiceTest extends JerseyTest {
         song.setReleased(2000);
         song.setTitle("Breathless through the night");
     }
-
-    @Override
-    protected Application configure() {
-        return new ResourceConfig(SongsWebService.class);
-    }
-
-
-/*    @Override
-    protected Application configure() {
-        return new ResourceConfig(SongsWebService.class).register(new AbstractBinder() {
-            @Override
-            protected void configure() {
-                bind(SongsHandler.class).to(ISongsHandler.class).in(Singleton.class);
-            }
-        });
-    }*/
 
     @Override
     public URI getBaseUri() {
