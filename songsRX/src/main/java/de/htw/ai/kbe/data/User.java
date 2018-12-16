@@ -13,13 +13,6 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String userId, String lastName, String firstName) {
-        this.id = id;
-        this.userId = userId;
-        this.lastName = lastName;
-        this.firstName = firstName;
-    }
-
     // also needed for JAXB
     public Integer getId() {
         return id;

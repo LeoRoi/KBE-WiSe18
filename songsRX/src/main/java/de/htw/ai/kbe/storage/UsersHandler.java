@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class UsersHandler implements IUsersHandler {
 
-    private static UsersHandler instance = null;
+    //private static UsersHandler instance = null;
     private static Map<String, String> storage;
 
 
@@ -32,7 +32,7 @@ public class UsersHandler implements IUsersHandler {
         }
     }
 
-    private void initSomeUsers() {
+   /* private void initSomeUsers() {
 
         String token1 = "x";
         String userId1 = "mmuster";
@@ -41,16 +41,16 @@ public class UsersHandler implements IUsersHandler {
         String token2 = "bla";
         String userId2 = "eschueler";
         storage.put(userId2, token2);
-    }
+    }*/
 
     public Map<String, String> getStorage() {
         return storage;
     }
 
-    public synchronized static UsersHandler getInstance() {
+   /* public synchronized static UsersHandler getInstance() {
         if (instance == null) {
             instance = new UsersHandler();
         }
         return instance;
-    }
+    }*/
 }

@@ -17,11 +17,6 @@ import javax.ws.rs.core.Response;
 
 public class SongsWebServiceTest extends JerseyTest {
 
-   /* @Override
-    public URI getBaseUri() {
-        return URI.create("http://localhost:8080/songsRX/rest/auth");
-    }*/
-
     private Song song;
 
     @Override

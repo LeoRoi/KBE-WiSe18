@@ -43,7 +43,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
 
-    //TODO check out dependency injection
     private boolean authenticate(String token) {
         //Map<String, String> tokenMap = UsersHandler.getInstance().getStorage();
         Map<String, String> tokenMap = handler.getStorage();
