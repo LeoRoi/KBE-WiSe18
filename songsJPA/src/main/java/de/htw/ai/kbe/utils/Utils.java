@@ -27,6 +27,17 @@ public class Utils {
         return songs;
     }
 
+    public static List<Song> loadTestSongsDB() {
+        List<Song> songs = new ArrayList<>();
+
+        songs.add(new Song(0, "Black", "Stones", "Best", 1990));
+        songs.add(new Song(1, "Can’t Stop the Feeling", "Justin Timberlake", "Trolls", 2016));
+        songs.add(new Song(22, "Sun", "God", "Trans", -11990));
+        songs.add(new Song(3, "Team", "Iggy", "Baby", 2015));
+
+        return songs;
+    }
+
     // from jaxbjackson
     public static List<Song> readJSONToSongs(String filename) throws FileNotFoundException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();

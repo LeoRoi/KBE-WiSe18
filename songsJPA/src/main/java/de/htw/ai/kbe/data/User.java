@@ -6,11 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "user")
 @Entity
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String userId;
     private String lastName;
@@ -18,6 +19,12 @@ public class User {
 
     // needed for JAXB
     public User() {
+    }
+
+    public User(String userId, String firstName, String lastName) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     // also needed for JAXB

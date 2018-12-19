@@ -1,9 +1,15 @@
 package de.htw.ai.kbe.data;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
+@Entity
+@Table(name="song")
 @XmlRootElement(name = "song")
 public class Song {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private String artist;
