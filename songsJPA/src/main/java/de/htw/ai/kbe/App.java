@@ -28,6 +28,8 @@ public class App {
             User user = new User("bsmith", "Bob", "Smith");
             em.persist(user);
 
+            em.persist(new User("copycat", "rob", "brown"));
+
             System.out.println("\tApp.main: // Alle User aus der DB lesen mit JPQL");
             Query q = em.createQuery("SELECT u FROM User u");
             @SuppressWarnings("unchecked")

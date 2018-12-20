@@ -1,13 +1,11 @@
 package de.htw.ai.kbe.data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "user")
 @Entity
+@Table(name="uuser")
 public class User {
 
     @Id

@@ -9,14 +9,14 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         
         <class>de.htw.ai.kbe.data.Song</class>
+        <class>de.htw.ai.kbe.data.User</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
-
             <!-- connection -->
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://db.f4.htw-berlin.de__s0557966__songs_postgre"/>
-            <property name="javax.persistence.jdbc.user" value="s0557966__songs_postgre_generic"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://db.f4.htw-berlin.de:5432/_s0557966__songs_postgre"/>
+            <property name="javax.persistence.jdbc.user" value="_s0557966__songs_postgre_generic"/>
             <property name="javax.persistence.jdbc.password" value="password_generic"/>
 
             <!-- Echo all executed SQL to stdout -->
