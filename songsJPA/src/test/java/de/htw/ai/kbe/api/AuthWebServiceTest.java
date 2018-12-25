@@ -1,4 +1,4 @@
-package de.htw.ai.kbe.services;
+package de.htw.ai.kbe.api;
 
 import de.htw.ai.kbe.storage.IUsersHandler;
 import de.htw.ai.kbe.storage.UsersHandler;

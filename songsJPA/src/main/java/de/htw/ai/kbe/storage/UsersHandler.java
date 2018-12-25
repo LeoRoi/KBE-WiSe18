@@ -3,22 +3,54 @@ package de.htw.ai.kbe.storage;
 import de.htw.ai.kbe.data.User;
 import de.htw.ai.kbe.utils.Utils;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static de.htw.ai.kbe.utils.Constants.PERSISTENCE_UNIT_NAME;
+
+/*
+* drop and create table with entries here?
+* or convert from db?
+*
+*/
+
 public class UsersHandler implements IUsersHandler {
-
-    //private static UsersHandler instance = null;
     private static Map<String, String> storage;
-
 
     public UsersHandler() {
         storage = new ConcurrentHashMap<>();
         //initSomeUsers();
-        init();
+//        init();
+        initFromDB();
+    }
+
+    private void initFromDB() {
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        EntityManager em = factory.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            Query q = em.createQuery("SELECT u FROM User u");
+            @SuppressWarnings("unchecked")
+            List<User> userList = q.getResultList();
+
+            for (User user : userList) {
+                storage.put(user.getUserId(), "x");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            em.close();
+            factory.close();
+        }
     }
 
     private void init() {
@@ -32,25 +64,7 @@ public class UsersHandler implements IUsersHandler {
         }
     }
 
-   /* private void initSomeUsers() {
-
-        String token1 = "x";
-        String userId1 = "mmuster";
-        storage.put(userId1, token1);
-
-        String token2 = "bla";
-        String userId2 = "eschueler";
-        storage.put(userId2, token2);
-    }*/
-
     public Map<String, String> getStorage() {
         return storage;
     }
-
-   /* public synchronized static UsersHandler getInstance() {
-        if (instance == null) {
-            instance = new UsersHandler();
-        }
-        return instance;
-    }*/
 }

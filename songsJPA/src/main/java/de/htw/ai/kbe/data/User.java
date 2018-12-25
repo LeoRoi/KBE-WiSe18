@@ -5,18 +5,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "user")
 @Entity
-@Table(name="uuser")
+@Table(name="users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String userId;
-    private String lastName;
     private String firstName;
+    private String lastName;
 
     // needed for JAXB
     public User() {
+    }
+
+    public User(int id, String userId, String firstName, String lastName) {
+        this.id = id;
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public User(String userId, String firstName, String lastName) {
