@@ -72,11 +72,12 @@ public class PostgreTester {
             em.getTransaction().begin();
 
             System.out.println("\tPostgreTester.main:  // Create new user");
-            User user = new User("bsmith", "Bob", "Smith");
-            em.persist(user);
+            User bob = new User("bsmith", "Bob", "Smith");
+            em.persist(bob);
 
             System.out.println("\tPostgreTester.main:  // Create new user");
-            em.persist(new User("copycat", "rob", "brown"));
+            User cat = new User("copycat", "rob", "brown");
+            em.persist(cat);
 
             System.out.println("\tPostgreTester.main: // Alle User aus der DB lesen mit JPQL");
             Query q = em.createQuery("SELECT u FROM User u");
@@ -90,7 +91,7 @@ public class PostgreTester {
             }
 
             // Read
-            int bobId = user.getId();
+            int bobId = bob.getId();
             User bobUserFromDB = em.find(User.class, bobId);
             System.out.println("Found bobUser: " + bobUserFromDB);
 
@@ -106,6 +107,7 @@ public class PostgreTester {
 
             System.out.println("\tPostgreTester.main: // Delete");
             em.remove(bobUserFromDB);
+            em.remove(em.find(User.class, cat.getId()));
 
             System.out.println("\tPostgreTester.main: // Check that delete happened");
             q = em.createQuery("SELECT u FROM User u");

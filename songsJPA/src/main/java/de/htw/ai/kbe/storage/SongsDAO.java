@@ -1,10 +1,10 @@
-/*
 package de.htw.ai.kbe.storage;
 
 import de.htw.ai.kbe.data.Song;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -15,63 +15,61 @@ import static de.htw.ai.kbe.utils.Utils.jsonToSongsList;
 
 public class SongsDAO implements ISongsHandler {
     private EntityManagerFactory emf;
-    private AtomicInteger counter;
 
     @Inject
     public SongsDAO(EntityManagerFactory emf) {
         this.emf = emf;
     }
 
-    public int getCounterValue() {
-        return counter.get();
-    }
-
-    public SongsDAO() {
-        this(jsonToSongsList("songs10.json"));
-//        System.out.println("default constructor OK");
-    }
-
-    public SongsDAO(List<Song> songs) {
-        this.storage = new ConcurrentHashMap<Integer, Song>();
-        this.counter = new AtomicInteger();
-
-        for (Song song : songs) {
-            storage.put(song.getId(), song);
-        }
-
-        counter.set(songs.size());
-//        printAllSongs();
-//        System.out.println("SongsHandler init OK");
-    }
-
     public Song getSong(int id) {
-        return storage.get(id);
+        EntityManager em = emf.createEntityManager();
+        Song entity = null;
+
+        try {
+            entity = em.find(Song.class, id);
+        } finally {
+            em.close();
+        }
+        return entity;
     }
 
     public Collection<Song> getAllSongs() {
-        return storage.values();
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            TypedQuery<Song> query = em.createQuery("SELECT s from Song s", Song.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
     }
 
-    public void printSong(int i) {
-        System.out.println(i + " = " + storage.get(i));
-    }
-
-    public void printAllSongs() {
-        System.out.println(storage);
-    }
-
-    // id based on counter
     public int addSong(Song newSong) {
-        storage.put(counter.incrementAndGet(), newSong);
-        return counter.get();
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        try {
+            transaction.begin();
+            em.persist(newSong);
+            transaction.commit();
+            return newSong.getId();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error adding new song: " + e.getMessage());
+            transaction.rollback();
+            throw new PersistenceException("Could not persist entity: " + e.toString());
+        } finally {
+            em.close();
+        }
     }
 
-    // take id from url, update content according to the payload
+    @Transactional
     public boolean updateSong(int id, Song newSong) {
-        Song song = storage.remove(id);
+        Song song = getSong(id);
 
         if (song != null) {
-            storage.put(id, newSong);
+            EntityManager em = emf.createEntityManager();
+            em.merge(newSong);
             return true;
         } else {
             return false;
@@ -79,13 +77,28 @@ public class SongsDAO implements ISongsHandler {
     }
 
     public boolean deleteSong(int id) {
-        Song song = storage.remove(id);
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        Song song = null;
+        Boolean status = false;
 
-        if (song != null) {
-            return true;
-        } else {
-            return false;
+        try {
+            song = em.find(Song.class, id);
+            if (song != null) {
+                System.out.println("Deleting: " + song);
+                transaction.begin();
+                em.remove(song);
+                transaction.commit();
+                status = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error removing song: " + e.getMessage());
+            transaction.rollback();
+            throw new PersistenceException("Could not remove entity: " + e.toString());
+        } finally {
+            em.close();
         }
+        return status;
     }
 }
-*/

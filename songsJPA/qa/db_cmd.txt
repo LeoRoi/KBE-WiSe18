@@ -1,0 +1,50 @@
+¤ postgre db management
+
+
+drop table users;
+CREATE TABLE users (
+id                  SERIAL PRIMARY KEY,
+userId VARCHAR(10)  NOT NULL,
+firstName           VARCHAR(30) NOT NULL,
+lastName            VARCHAR(30) NOT NULL
+);
+
+INSERT INTO users VALUES(1, 'mmuster', 'Maxime', 'Muster');
+INSERT INTO users VALUES(2, 'eschuler', 'Elena', 'Schuler');
+
+alter sequence users_id_seq restart with 3;
+select last_value from users_id_seq;
+
+
+drop table songs;
+create table songs (
+  id        SERIAL PRIMARY KEY,
+  title     VARCHAR(100) NOT NULL,
+  artist    VARCHAR(100) NOT NULL,
+  album     VARCHAR(100) NOT NULL,
+  released  integer NOT NULL
+);
+
+
+drop table songs;
+create table songs (
+  id        SERIAL PRIMARY KEY,
+  title     VARCHAR(100) NOT NULL,
+  artist    VARCHAR(100) NOT NULL,
+  album     VARCHAR(100) NOT NULL,
+  released  integer NOT NULL
+);
+
+insert into songs values(1, 'Can’t Stop the Feeling', 'Justin Timberlake', 'Trolls', 2016);
+insert into songs values(2, 'Mom', 'Meghan Trainor, Kelli Trainor', 'Thank You', 2016);
+insert into songs values(3, 'Team', 'Iggy Azalea', 'null', 2016);
+insert into songs values(4, 'Ghostbusters (I'm not a fraid)', 'Fall Out Boy, Missy Elliott', 'Ghostbusters', 2016);
+insert into songs values(5, 'Bad Things', 'Camila Cabello, Machine Gun Kelly', 'Bloom', 2017);
+insert into songs values(6, 'I Took a Pill in Ibiza', 'Mike Posner', 'At Night, Alone.', 2016);
+insert into songs values(7, 'i hate u, i love u', 'Gnash', 'Top Hits 2017', 2017);
+insert into songs values(8, 'No', 'Meghan Trainor', 'Thank You', 2016);
+insert into songs values(9, 'Private Show', 'Britney Spears', 'Glory', 2016);
+insert into songs values(10, '7 Years', 'Lukas Graham', 'Lukas Graham (Blue Album)', 2015);
+
+alter sequence songs_id_seq restart with 11;
+select last_value from songs_id_seq;
