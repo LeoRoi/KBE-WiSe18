@@ -1,5 +1,9 @@
 ¤ postgre db management
+_______________________
 
+delete from songs where id=1;
+
+\
 
 drop table users;
 CREATE TABLE users (
@@ -15,6 +19,7 @@ INSERT INTO users VALUES(2, 'eschuler', 'Elena', 'Schuler');
 alter sequence users_id_seq restart with 3;
 select last_value from users_id_seq;
 
+\
 
 drop table songs;
 create table songs (
@@ -25,20 +30,10 @@ create table songs (
   released  integer NOT NULL
 );
 
-
-drop table songs;
-create table songs (
-  id        SERIAL PRIMARY KEY,
-  title     VARCHAR(100) NOT NULL,
-  artist    VARCHAR(100) NOT NULL,
-  album     VARCHAR(100) NOT NULL,
-  released  integer NOT NULL
-);
-
-insert into songs values(1, 'Can’t Stop the Feeling', 'Justin Timberlake', 'Trolls', 2016);
+insert into songs values(1, 'Can''t Stop the Feeling', 'Justin Timberlake', 'Trolls', 2016);
 insert into songs values(2, 'Mom', 'Meghan Trainor, Kelli Trainor', 'Thank You', 2016);
 insert into songs values(3, 'Team', 'Iggy Azalea', 'null', 2016);
-insert into songs values(4, 'Ghostbusters (I'm not a fraid)', 'Fall Out Boy, Missy Elliott', 'Ghostbusters', 2016);
+insert into songs values(4, 'Ghostbusters (I''m not a fraid)', 'Fall Out Boy, Missy Elliott', 'Ghostbusters', 2016);
 insert into songs values(5, 'Bad Things', 'Camila Cabello, Machine Gun Kelly', 'Bloom', 2017);
 insert into songs values(6, 'I Took a Pill in Ibiza', 'Mike Posner', 'At Night, Alone.', 2016);
 insert into songs values(7, 'i hate u, i love u', 'Gnash', 'Top Hits 2017', 2017);

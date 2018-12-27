@@ -6,18 +6,12 @@ import javax.inject.Inject;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import static de.htw.ai.kbe.utils.Utils.jsonToSongsList;
-
-public class SongsDAO implements ISongsHandler {
+public class SongsDao implements ISongsHandler {
     private EntityManagerFactory emf;
 
     @Inject
-    public SongsDAO(EntityManagerFactory emf) {
+    public SongsDao(EntityManagerFactory emf) {
         this.emf = emf;
     }
 

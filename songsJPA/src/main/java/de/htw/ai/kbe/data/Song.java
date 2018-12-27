@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name="song")
+@Table(name="songs")
 @XmlRootElement(name = "song")
 public class Song {
 

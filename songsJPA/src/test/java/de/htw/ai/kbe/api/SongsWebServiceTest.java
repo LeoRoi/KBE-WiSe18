@@ -1,7 +1,7 @@
 package de.htw.ai.kbe.api;
 
 import de.htw.ai.kbe.data.Song;
-import de.htw.ai.kbe.storage.SongsHandler;
+import de.htw.ai.kbe.storage.SongsDao;
 import de.htw.ai.kbe.storage.ISongsHandler;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -36,7 +36,7 @@ public class SongsWebServiceTest extends JerseyTest {
         return new ResourceConfig(SongsWebService.class).register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(SongsHandler.class).to(ISongsHandler.class).in(Singleton.class);
+                bind(SongsDao.class).to(ISongsHandler.class).in(Singleton.class);
             }
         });
     }
