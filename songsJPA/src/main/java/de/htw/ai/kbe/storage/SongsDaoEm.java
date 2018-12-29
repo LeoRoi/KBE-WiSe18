@@ -6,40 +6,31 @@ import javax.inject.Inject;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
-public class SongsDao implements ISongsHandler {
-    private EntityManagerFactory emf;
+public class SongsDaoEm implements ISongsHandler {
+    private EntityManager em;
 
     @Inject
-    public SongsDao(EntityManagerFactory emf) {
-        this.emf = emf;
+    public SongsDaoEm(EntityManager em) {
+        this.em = em;
     }
 
     public Song getSong(int id) {
-        EntityManager em = emf.createEntityManager();
-        Song entity = null;
+        Song song = em.find(Song.class, id);
 
-        try {
-            entity = em.find(Song.class, id);
-        } finally {
-            em.close();
-        }
-        return entity;
+    if(song == null)
+        throw new NoSuchElementException("No song with id ");
+
+        return song;
     }
 
     public Collection<Song> getAllSongs() {
-        EntityManager em = emf.createEntityManager();
-
-        try {
             TypedQuery<Song> query = em.createQuery("SELECT s from Song s", Song.class);
             return query.getResultList();
-        } finally {
-            em.close();
-        }
     }
 
     public int addSong(Song newSong) {
-        EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
 
         try {
@@ -52,8 +43,6 @@ public class SongsDao implements ISongsHandler {
             System.out.println("Error adding new song: " + e.getMessage());
             transaction.rollback();
             throw new PersistenceException("Could not persist entity: " + e.toString());
-        } finally {
-            em.close();
         }
     }
 
@@ -62,7 +51,6 @@ public class SongsDao implements ISongsHandler {
         Song song = getSong(id);
 
         if (song != null) {
-            EntityManager em = emf.createEntityManager();
             em.merge(newSong);
             return true;
         } else {
@@ -71,8 +59,6 @@ public class SongsDao implements ISongsHandler {
     }
 
     public boolean deleteSong(int id) {
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
         Song song = null;
         Boolean status = false;
 
@@ -80,18 +66,16 @@ public class SongsDao implements ISongsHandler {
             song = em.find(Song.class, id);
             if (song != null) {
                 System.out.println("Deleting: " + song);
-                transaction.begin();
+                em.getTransaction().begin();
                 em.remove(song);
-                transaction.commit();
+                em.getTransaction().commit();
                 status = true;
             }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error removing song: " + e.getMessage());
-            transaction.rollback();
+            em.getTransaction().rollback();
             throw new PersistenceException("Could not remove entity: " + e.toString());
-        } finally {
-            em.close();
         }
         return status;
     }

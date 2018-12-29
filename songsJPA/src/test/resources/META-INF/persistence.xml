@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <!--
+    https://stackoverflow.com/questions/16572039/connecting-postgresql-9-2-1-with-hibernate
+    -->
+
+    <persistence-unit name="songDB-test" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        
+        <class>de.htw.ai.kbe.data.Song</class>
+        <class>de.htw.ai.kbe.data.User</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+        <properties>
+            <!-- connection -->
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://db.f4.htw-berlin.de:5432/_s0557966__songs_postgre"/>
+            <property name="javax.persistence.jdbc.user" value="_s0557966__songs_postgre_generic"/>
+            <property name="javax.persistence.jdbc.password" value="password_generic"/>
+
+            <!-- Echo all executed SQL to stdout -->
+            <property name="hibernate.show_sql" value="true"/>
+
+            <!-- SQL dialect -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL92Dialect"/>
+
+            <!-- JDBC connection pool (use the built-in) -->
+            <property name="connection.pool_size" value="1"/>
+        </properties>
+    </persistence-unit>
+</persistence>

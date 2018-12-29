@@ -27,6 +27,13 @@ public class Song {
         this.released = released;
     }
 
+    public Song(String title, String artist, String album, int released) {
+        this.title = title;
+        this.artist = artist;
+        this.album = album;
+        this.released = released;
+    }
+
     public int getId() {
         return id;
     }
