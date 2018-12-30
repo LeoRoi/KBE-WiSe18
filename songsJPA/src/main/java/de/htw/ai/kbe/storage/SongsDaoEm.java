@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 
 public class SongsDaoEm implements ISongsHandler {
+    //    @Inject
     private EntityManager em;
 
     @Inject
@@ -19,15 +20,15 @@ public class SongsDaoEm implements ISongsHandler {
     public Song getSong(int id) {
         Song song = em.find(Song.class, id);
 
-    if(song == null)
-        throw new NoSuchElementException("No song with id ");
+        if (song == null)
+            throw new NoSuchElementException("No song with id "+id);
 
         return song;
     }
 
     public Collection<Song> getAllSongs() {
-            TypedQuery<Song> query = em.createQuery("SELECT s from Song s", Song.class);
-            return query.getResultList();
+        TypedQuery<Song> query = em.createQuery("SELECT s from Song s", Song.class);
+        return query.getResultList();
     }
 
     public int addSong(Song newSong) {
@@ -48,15 +49,31 @@ public class SongsDaoEm implements ISongsHandler {
 
     @Transactional
     public boolean updateSong(int id, Song newSong) {
-        Song song = getSong(id);
+        Boolean delOk = deleteSong(id);
 
-        if (song != null) {
-            em.merge(newSong);
-            return true;
-        } else {
+        if(!delOk) {
             return false;
+        } else {
+            addSong(newSong);
+            return true;
         }
     }
+
+//    @Transactional
+//    public boolean updateSong(int id, Song newSong) {
+//        Song song = getSong(id);
+//
+//        if (song != null) {
+//            em.merge(newSong)
+////            getSong(id);
+////            em.getTransaction().begin();
+////            em.merge(newSong);
+////            em.getTransaction().commit();
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
     public boolean deleteSong(int id) {
         Song song = null;

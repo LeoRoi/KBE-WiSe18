@@ -43,3 +43,14 @@ insert into songs values(10, '7 Years', 'Lukas Graham', 'Lukas Graham (Blue Albu
 
 alter sequence songs_id_seq restart with 11;
 select last_value from songs_id_seq;
+
+\
+
+drop table songstester;
+create table songstester (
+  id        SERIAL PRIMARY KEY,
+  title     VARCHAR(100) NOT NULL,
+  artist    VARCHAR(100) NOT NULL,
+  album     VARCHAR(100) NOT NULL,
+  released  integer NOT NULL
+);

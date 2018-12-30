@@ -1,10 +1,7 @@
 package de.htw.ai.kbe.storage;
 
 import de.htw.ai.kbe.data.Song;
-import de.htw.ai.kbe.data.User;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import static org.junit.Assert.*;
 
@@ -33,8 +30,14 @@ public class SongsDaoTest {
         handler = new SongsDaoEm(em);
     }
 
+    @After
+    public void clear(){
+        em.clear();
+    }
+
     @AfterClass
     public static void close() {
+        em.close();
         emf.close();
     }
 
@@ -66,20 +69,21 @@ public class SongsDaoTest {
     }
 
     @Test
-    public void addAndDeleteSong() {
-        String myTitle = "christmas";
-//        Song newSong = new Song(myTitle, "who s the singer??", "end of the year", 1980);
-//        handler.addSong(newSong);
-//        handler.addSong(newSong);
-//        assertEquals(12, handler.getAllSongs().size());
+    public void addUpdateDelete() {
+        Song newSong = new Song("christmas", "who s the singer??", "end of the year", 1980);
+        handler.addSong(newSong);
+        assertEquals(11, handler.getAllSongs().size());
 
-        Query q = em.createQuery("SELECT s FROM Song s where s.title = " + myTitle);
-        @SuppressWarnings("unchecked")
-        List<Song> songs = q.getResultList();
-        for(Song song : songs) {
-            int id = song.getId();
-            em.remove(em.find(Song.class, id));
-        }
-        assertEquals(10, handler.getAllSongs().size());
+        int newSongId = newSong.getId();
+        System.out.println("SongsDaoTest.addUpdateDelete.newSong="+handler.getSong(newSongId));
+
+        //update
+        handler.updateSong(newSongId, new Song("CHRISTMAS", "who s the singer??", "end of the year", 1980));
+//        newSongId++;
+        System.out.println("SongsDaoTest.addUpdateDelete.updatedSong="+handler.getSong(newSongId));
+
+        //delete
+//        handler.deleteSong(newSongId);
+
     }
 }
