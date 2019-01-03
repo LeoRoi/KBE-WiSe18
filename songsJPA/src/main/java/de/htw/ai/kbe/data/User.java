@@ -3,9 +3,9 @@ package de.htw.ai.kbe.data;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "user")
 @Entity
 @Table(name="users")
+@XmlRootElement(name = "user")
 public class User {
 
     @Id

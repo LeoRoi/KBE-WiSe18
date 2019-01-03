@@ -21,7 +21,7 @@ public class SongsDaoEm implements ISongsHandler {
         Song song = em.find(Song.class, id);
 
         if (song == null)
-            throw new NoSuchElementException("No song with id "+id);
+            throw new NoSuchElementException("Not found: song with id "+id);
 
         return song;
     }

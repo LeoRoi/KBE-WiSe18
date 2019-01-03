@@ -1,22 +1,30 @@
 package de.htw.ai.kbe.api;
 
 import de.htw.ai.kbe.data.Song;
+import de.htw.ai.kbe.storage.SongsDaoEm;
 import de.htw.ai.kbe.storage.SongsDaoEmf;
 import de.htw.ai.kbe.storage.ISongsHandler;
+import de.htw.ai.kbe.storage.SongsHandler;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.inject.Singleton;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
-public class SongsWebServiceTest extends JerseyTest {
+import static de.htw.ai.kbe.utils.Constants.TEST_PERSISTENCE_UNIT_NAME;
+import static de.htw.ai.kbe.utils.Utils.jsonToSongsList;
 
+public class SongsWebServiceTest extends JerseyTest {
     private Song song;
 
     @Override
@@ -36,7 +44,7 @@ public class SongsWebServiceTest extends JerseyTest {
         return new ResourceConfig(SongsWebService.class).register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(SongsDaoEmf.class).to(ISongsHandler.class).in(Singleton.class);
+                bind(SongsHandler.class).to(ISongsHandler.class).in(Singleton.class);
             }
         });
     }

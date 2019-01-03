@@ -1,6 +1,8 @@
 package de.htw.ai.kbe.storage;
 
 import de.htw.ai.kbe.data.Song;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -89,5 +91,8 @@ public class SongsDaoTest {
         handler.deleteSong(newSongId);
         assertEquals(10, handler.getAllSongs().size());
         System.out.println("SongsDaoTest.addUpdateDelete.ALLCOOL");
+
+        //reset the sequence
+        Query q = em.createNativeQuery("alter sequence songs_id_seq restart with 11;");
     }
 }
