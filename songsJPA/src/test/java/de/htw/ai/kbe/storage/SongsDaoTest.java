@@ -31,7 +31,7 @@ public class SongsDaoTest {
     }
 
     @After
-    public void clear(){
+    public void clear() {
         em.clear();
     }
 
@@ -77,15 +77,17 @@ public class SongsDaoTest {
         assertEquals(11, handler.getAllSongs().size());
 
         int newSongId = newSong.getId();
-        System.out.println("SongsDaoTest.addUpdateDelete.newSong="+handler.getSong(newSongId));
+        System.out.println("SongsDaoTest.addUpdateDelete.newSong=" + handler.getSong(newSongId));
 
         //update
-        handler.updateSong(newSongId, new Song("christmas", "who s the singer??", "end of the year", 1977));
-//        newSongId++;
-        System.out.println("SongsDaoTest.addUpdateDelete.updatedSong="+handler.getSong(newSongId));
+        int newYear = 1977;
+        handler.updateSong(newSongId, new Song("christmas", "who s the singer??", "end of the year", newYear));
+        assertEquals(newYear, handler.getSong(newSongId).getReleased());
+        System.out.println("SongsDaoTest.addUpdateDelete.updatedSong=" + handler.getSong(newSongId));
 
         //delete
         handler.deleteSong(newSongId);
-
+        assertEquals(10, handler.getAllSongs().size());
+        System.out.println("SongsDaoTest.addUpdateDelete.ALLCOOL");
     }
 }
