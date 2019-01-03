@@ -47,33 +47,53 @@ public class SongsDaoEm implements ISongsHandler {
         }
     }
 
-    @Transactional
-    public boolean updateSong(int id, Song newSong) {
-        Boolean delOk = deleteSong(id);
-
-        if(!delOk) {
-            return false;
-        } else {
-            addSong(newSong);
-            return true;
-        }
-    }
+//    @Transactional
+//    public boolean updateSong(int id, Song newSong) {
+//        Boolean delOk = deleteSong(id);
+//
+//        if(!delOk) {
+//            return false;
+//        } else {
+//            addSong(newSong);
+//            return true;
+//        }
+//    }
 
 //    @Transactional
 //    public boolean updateSong(int id, Song newSong) {
 //        Song song = getSong(id);
 //
 //        if (song != null) {
-//            em.merge(newSong)
+//            em.getTransaction().begin();
+//            em.merge(newSong);
+//            em.getTransaction().commit();
 ////            getSong(id);
-////            em.getTransaction().begin();
 ////            em.merge(newSong);
-////            em.getTransaction().commit();
 //            return true;
 //        } else {
 //            return false;
 //        }
 //    }
+
+    @Transactional
+    public boolean updateSong(int id, Song newSong) {
+        Song song = getSong(id);
+
+        if (song != null) {
+            em.getTransaction().begin();
+            Song dbSong = em.find(Song.class, id);
+
+            dbSong.setReleased(newSong.getReleased());
+            dbSong.setArtist(newSong.getArtist());
+            dbSong.setTitle(newSong.getTitle());
+            dbSong.setAlbum(newSong.getAlbum());
+
+            em.getTransaction().commit();
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public boolean deleteSong(int id) {
         Song song = null;

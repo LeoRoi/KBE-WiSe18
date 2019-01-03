@@ -43,9 +43,11 @@ public class SongsDaoTest {
 
     @Test
     public void init() {
+        int size = handler.getAllSongs().size();
         System.out.println("SongsDaoEmfTest.init.all=" + handler.getAllSongs());
         System.out.println("SongsDaoEmfTest.init.all.size=" + handler.getAllSongs().size());
-        assert (testHandler.getStorage().size() == handler.getAllSongs().size());
+        System.out.println(10 + " == " + size + " ?");
+        assert (testHandler.getStorage().size() == size);
     }
 
     @Test
@@ -78,12 +80,12 @@ public class SongsDaoTest {
         System.out.println("SongsDaoTest.addUpdateDelete.newSong="+handler.getSong(newSongId));
 
         //update
-        handler.updateSong(newSongId, new Song("CHRISTMAS", "who s the singer??", "end of the year", 1980));
+        handler.updateSong(newSongId, new Song("christmas", "who s the singer??", "end of the year", 1977));
 //        newSongId++;
         System.out.println("SongsDaoTest.addUpdateDelete.updatedSong="+handler.getSong(newSongId));
 
         //delete
-//        handler.deleteSong(newSongId);
+        handler.deleteSong(newSongId);
 
     }
 }
