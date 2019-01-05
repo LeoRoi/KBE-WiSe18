@@ -1,6 +1,13 @@
 ¤ postgre db management
 _______________________
 
+Für das Projekt “songsRX” können Sie die
+1:n-Beziehung User-SongLists und die
+n:m-Beziehung Songs-SongLists
+modellieren und entsprechende Tabellen und Entities erstellen
+
+\
+
 delete from songs where id=1;
 
 \
@@ -54,3 +61,48 @@ create table songstester (
   album     VARCHAR(100) NOT NULL,
   released  integer NOT NULL
 );
+
+\ 1:n-Beziehung User-SongLists
+
+drop table playlists;
+create table playlists (
+    id      SERIAL PRIMARY KEY,
+    open    BOOLEAN NOT NULL,
+    owner   integer,
+    FOREIGN KEY (owner) REFERENCES users(id) ON DELETE CASCADE
+);
+
+insert into playlists values(1, TRUE, 1);
+insert into playlists values(2, FALSE, 1);
+insert into playlists values(3, TRUE, 2);
+insert into playlists values(4, FALSE, 2);
+
+alter sequence playlists_id_seq restart with 5;
+select last_value from playlists_id_seq;
+
+\ n:m-Beziehung Songs-SongLists
+
+drop table psmap;
+create table psmap (
+    pid     INT,
+    sid     INT,
+    PRIMARY KEY (sid, pid),
+    FOREIGN KEY (sid) REFERENCES songs(id) ON UPDATE CASCADE,
+    FOREIGN KEY (pid) REFERENCES playlists(id) ON UPDATE CASCADE
+);
+
+insert into psmap values (1, 1);
+insert into psmap values (1, 2);
+
+insert into psmap values (2, 3);
+insert into psmap values (2, 4);
+insert into psmap values (2, 5);
+insert into psmap values (2, 6);
+
+insert into psmap values (3, 1);
+insert into psmap values (3, 2);
+
+insert into psmap values (4, 7);
+insert into psmap values (4, 8);
+insert into psmap values (4, 9);
+insert into psmap values (4, 10);
