@@ -1,6 +1,6 @@
 package de.htw.ai.kbe.utils;
 
-import de.htw.ai.kbe.data.User;
+import de.htw.ai.kbe.entity.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

@@ -1,6 +1,6 @@
 package de.htw.ai.kbe.api;
 
-import de.htw.ai.kbe.data.Song;
+import de.htw.ai.kbe.entity.Song;
 import de.htw.ai.kbe.storage.ISongsHandler;
 
 import javax.inject.Inject;

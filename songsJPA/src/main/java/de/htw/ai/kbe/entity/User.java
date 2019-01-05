@@ -1,4 +1,4 @@
-package de.htw.ai.kbe.data;
+package de.htw.ai.kbe.entity;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;

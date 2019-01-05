@@ -1,8 +1,6 @@
 package de.htw.ai.kbe.storage;
 
-import de.htw.ai.kbe.data.Song;
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
+import de.htw.ai.kbe.entity.Song;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -11,8 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static de.htw.ai.kbe.utils.Constants.*;
@@ -93,6 +89,7 @@ public class SongsDaoTest {
         System.out.println("SongsDaoTest.addUpdateDelete.ALLCOOL");
 
         //reset the sequence
-        Query q = em.createNativeQuery("alter sequence songs_id_seq restart with 11;");
+        //TODO fix
+        em.createNativeQuery("alter sequence songs_id_seq restart with 11;");
     }
 }

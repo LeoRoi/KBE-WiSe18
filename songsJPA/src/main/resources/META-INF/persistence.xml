@@ -8,8 +8,8 @@
     <persistence-unit name="songDB-PU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>de.htw.ai.kbe.data.Song</class>
-        <class>de.htw.ai.kbe.data.User</class>
+        <class>de.htw.ai.kbe.entity.Song</class>
+        <class>de.htw.ai.kbe.entity.User</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

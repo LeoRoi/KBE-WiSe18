@@ -1,12 +1,11 @@
 package de.htw.ai.kbe.utils;
 
-import de.htw.ai.kbe.data.Song;
+import de.htw.ai.kbe.entity.Song;
 import de.htw.ai.kbe.storage.ISongsHandler;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 

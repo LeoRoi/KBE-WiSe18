@@ -1,6 +1,6 @@
 package de.htw.ai.kbe.storage;
 
-import de.htw.ai.kbe.data.Song;
+import de.htw.ai.kbe.entity.Song;
 import de.htw.ai.kbe.utils.SongsHandlerT;
 import org.junit.Before;
 import org.junit.Test;

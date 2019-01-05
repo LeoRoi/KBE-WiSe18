@@ -11,7 +11,6 @@ import java.util.Map;
 
 @Path("/auth")
 public class AuthWebService {
-
     private IUsersHandler handler;
 
     @Inject
@@ -20,12 +19,11 @@ public class AuthWebService {
         this.handler = userHandler;
     }
 
-
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Response checkToken(@QueryParam("userId") String userId) {
         //Map <String, String>tokenBook = UsersHandler.getInstance().getStorage();
-        Map <String, String>tokenBook = handler.getStorage();
+        Map<String, String> tokenBook = handler.getStorage();
         if (tokenBook.containsKey(userId)) {
             if (tokenBook.get(userId).equals("x")) {        //TODO maybe change x to something more reasonable
                 String token = Utils.generateToken();
@@ -40,5 +38,4 @@ public class AuthWebService {
         }
         return Response.status(403, "No Authorization").build();
     }
-
 }

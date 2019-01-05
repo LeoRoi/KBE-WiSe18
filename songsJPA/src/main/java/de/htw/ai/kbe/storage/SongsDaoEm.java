@@ -1,6 +1,6 @@
 package de.htw.ai.kbe.storage;
 
-import de.htw.ai.kbe.data.Song;
+import de.htw.ai.kbe.entity.Song;
 
 import javax.inject.Inject;
 import javax.persistence.*;
@@ -8,6 +8,9 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
+/**
+ * currently used
+ */
 public class SongsDaoEm implements ISongsHandler {
     //    @Inject
     private EntityManager em;
@@ -46,34 +49,6 @@ public class SongsDaoEm implements ISongsHandler {
             throw new PersistenceException("Could not persist entity: " + e.toString());
         }
     }
-
-//    @Transactional
-//    public boolean updateSong(int id, Song newSong) {
-//        Boolean delOk = deleteSong(id);
-//
-//        if(!delOk) {
-//            return false;
-//        } else {
-//            addSong(newSong);
-//            return true;
-//        }
-//    }
-
-//    @Transactional
-//    public boolean updateSong(int id, Song newSong) {
-//        Song song = getSong(id);
-//
-//        if (song != null) {
-//            em.getTransaction().begin();
-//            em.merge(newSong);
-//            em.getTransaction().commit();
-////            getSong(id);
-////            em.merge(newSong);
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
 
     @Transactional
     public boolean updateSong(int id, Song newSong) {

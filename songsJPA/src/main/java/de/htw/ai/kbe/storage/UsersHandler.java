@@ -1,6 +1,6 @@
 package de.htw.ai.kbe.storage;
 
-import de.htw.ai.kbe.data.User;
+import de.htw.ai.kbe.entity.User;
 import de.htw.ai.kbe.utils.Utils;
 
 import javax.persistence.EntityManager;
@@ -16,10 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import static de.htw.ai.kbe.utils.Constants.PERSISTENCE_UNIT_NAME;
 
 /*
-* drop and create table with entries here?
-* or convert from db?
-*
-*/
+ * drop and create table with entries here?
+ * or convert from db?
+ *
+ */
 
 public class UsersHandler implements IUsersHandler {
     private static Map<String, String> storage;
@@ -32,16 +32,13 @@ public class UsersHandler implements IUsersHandler {
     }
 
     private void initFromDB() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager em = factory.createEntityManager();
-
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-
             Query q = em.createQuery("SELECT u FROM User u");
             @SuppressWarnings("unchecked")
             List<User> userList = q.getResultList();
-
             for (User user : userList) {
                 storage.put(user.getUserId(), "x");
             }
@@ -49,7 +46,7 @@ public class UsersHandler implements IUsersHandler {
             ex.printStackTrace();
         } finally {
             em.close();
-            factory.close();
+            emf.close();
         }
     }
 

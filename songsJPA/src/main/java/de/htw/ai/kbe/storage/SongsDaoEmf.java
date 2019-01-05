@@ -1,12 +1,15 @@
 package de.htw.ai.kbe.storage;
 
-import de.htw.ai.kbe.data.Song;
+import de.htw.ai.kbe.entity.Song;
 
 import javax.inject.Inject;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.Collection;
 
+/**
+ * did not work
+ */
 public class SongsDaoEmf implements ISongsHandler {
     private EntityManagerFactory emf;
 

@@ -1,17 +1,12 @@
 package de.htw.ai.kbe.utils;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
 
-import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
-import de.htw.ai.kbe.data.Song;
-import de.htw.ai.kbe.data.User;
+import de.htw.ai.kbe.entity.Song;
+import de.htw.ai.kbe.entity.User;
 
 public class Utils {
     private Utils() {}
