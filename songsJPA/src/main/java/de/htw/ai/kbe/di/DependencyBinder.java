@@ -10,5 +10,6 @@ public class DependencyBinder extends AbstractBinder {
     protected void configure() {
         bind(SongsHandler.class).to(ISongsHandler.class).in(Singleton.class);
         bind(new UsersHandler()).to(IUsersHandler.class);
+        bind(PlaylistsDao.class).to(IPlaylistsHandler.class);
     }
 }

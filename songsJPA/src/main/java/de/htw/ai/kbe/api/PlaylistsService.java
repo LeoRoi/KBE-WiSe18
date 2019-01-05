@@ -29,9 +29,9 @@ public class PlaylistsService {
     @GET
     @Path("/{userId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response getUserPlaylists(@PathParam("userId") String uid) {
-        System.out.println("getAllSongs");
-        return Response.ok().build();
+    public Response getUserPlaylists(@PathParam("userId") int uid) {
+        System.out.println("getPlaylists");
+        return Response.ok(playlistsHandler.getUserPlaylists(uid)).build();
     }
 
     @GET

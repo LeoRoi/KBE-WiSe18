@@ -21,8 +21,8 @@ public class PlaylistsDao implements IPlaylistsHandler {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Playlist> getUserPlaylists(User user) {
-        Query q = em.createQuery("SELECT pl from Playlist pl where pl.owner = :uid", Playlist.class).setParameter("uid", user.getId());
+    public List<Playlist> getUserPlaylists(int uid) {
+        Query q = em.createQuery("SELECT pl from Playlist pl where pl.owner = :uid", Playlist.class).setParameter("uid", uid);
         return q.getResultList();
     }
 

@@ -14,7 +14,6 @@ import java.util.Map;
 
 @Provider
 public class AuthenticationFilter implements ContainerRequestFilter {
-
     private IUsersHandler handler;
 
     @Inject
@@ -28,7 +27,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
-
         System.out.println("Filter up and running");
         if (!requestContext.getUriInfo().getPath().contains("auth")) {
             System.out.println("this is not /auth");
@@ -40,7 +38,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             }
         }
     }
-
 
     private boolean authenticate(String token) {
         if (token == null) token = "-";
