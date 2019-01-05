@@ -1,7 +1,7 @@
 package de.htw.ai.kbe.utils;
 
 import de.htw.ai.kbe.entity.Song;
-import de.htw.ai.kbe.storage.ISongsHandler;
+import de.htw.ai.kbe.handler.ISongsHandler;
 
 import java.util.Collection;
 import java.util.List;

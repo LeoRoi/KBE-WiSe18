@@ -1,6 +1,6 @@
 package de.htw.ai.kbe.di;
 
-import de.htw.ai.kbe.storage.*;
+import de.htw.ai.kbe.handler.*;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
 import javax.inject.Singleton;

@@ -1,6 +1,6 @@
 package de.htw.ai.kbe.api;
 
-import de.htw.ai.kbe.storage.IUsersHandler;
+import de.htw.ai.kbe.handler.IUsersHandler;
 import de.htw.ai.kbe.utils.Utils;
 
 import javax.inject.Inject;
@@ -10,11 +10,11 @@ import javax.ws.rs.core.Response;
 import java.util.Map;
 
 @Path("/auth")
-public class AuthWebService {
+public class AuthService {
     private IUsersHandler handler;
 
     @Inject
-    public AuthWebService(IUsersHandler userHandler) {
+    public AuthService(IUsersHandler userHandler) {
         super();
         this.handler = userHandler;
     }

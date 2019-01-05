@@ -1,7 +1,7 @@
 package de.htw.ai.kbe.api;
 
 import de.htw.ai.kbe.entity.Song;
-import de.htw.ai.kbe.storage.ISongsHandler;
+import de.htw.ai.kbe.handler.ISongsHandler;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -9,7 +9,7 @@ import javax.ws.rs.core.*;
 import java.util.Collection;
 
 @Path("/songs")
-public class SongsWebService {
+public class SongsService {
 //    @Inject
     private ISongsHandler handler;
 
@@ -17,7 +17,7 @@ public class SongsWebService {
     UriInfo uriInfo;
 
     @Inject
-    public SongsWebService(ISongsHandler songsHandler) {
+    public SongsService(ISongsHandler songsHandler) {
         super();
         handler = songsHandler;
     }

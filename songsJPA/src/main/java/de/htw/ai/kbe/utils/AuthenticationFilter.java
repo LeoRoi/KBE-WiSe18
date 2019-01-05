@@ -1,7 +1,6 @@
 package de.htw.ai.kbe.utils;
 
-import de.htw.ai.kbe.storage.IUsersHandler;
-import de.htw.ai.kbe.storage.UsersHandler;
+import de.htw.ai.kbe.handler.IUsersHandler;
 
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;

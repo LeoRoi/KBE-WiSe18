@@ -1,8 +1,8 @@
 package de.htw.ai.kbe.api;
 
 import de.htw.ai.kbe.entity.Song;
-import de.htw.ai.kbe.storage.ISongsHandler;
-import de.htw.ai.kbe.storage.SongsHandler;
+import de.htw.ai.kbe.handler.ISongsHandler;
+import de.htw.ai.kbe.handler.SongsHandler;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
@@ -15,7 +15,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
-public class SongsWebServiceTest extends JerseyTest {
+public class SongsServiceTest extends JerseyTest {
     private Song song;
 
     @Override
@@ -32,7 +32,7 @@ public class SongsWebServiceTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        return new ResourceConfig(SongsWebService.class).register(new AbstractBinder() {
+        return new ResourceConfig(SongsService.class).register(new AbstractBinder() {
             @Override
             protected void configure() {
                 bind(SongsHandler.class).to(ISongsHandler.class).in(Singleton.class);

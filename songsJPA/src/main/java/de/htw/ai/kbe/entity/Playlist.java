@@ -13,7 +13,12 @@ public class Playlist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private boolean open;
+
+    @ManyToOne
     private User owner;
+
+    @ManyToMany
+    @JoinTable(name = "psmap", joinColumns = { @JoinColumn(name = "pid") }, inverseJoinColumns = {            @JoinColumn(name = "sid") })
     private List<Song> content;
 
     public Playlist(){}

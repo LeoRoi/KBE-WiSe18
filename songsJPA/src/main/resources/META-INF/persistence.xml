@@ -10,6 +10,7 @@
 
         <class>de.htw.ai.kbe.entity.Song</class>
         <class>de.htw.ai.kbe.entity.User</class>
+        <class>de.htw.ai.kbe.entity.Playlist</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

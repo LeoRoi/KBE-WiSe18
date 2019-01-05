@@ -1,7 +1,7 @@
 package de.htw.ai.kbe.api;
 
-import de.htw.ai.kbe.storage.IUsersHandler;
-import de.htw.ai.kbe.storage.UsersHandler;
+import de.htw.ai.kbe.handler.IUsersHandler;
+import de.htw.ai.kbe.handler.UsersHandler;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
@@ -12,11 +12,11 @@ import javax.inject.Singleton;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
-public class AuthWebServiceTest extends JerseyTest {
+public class AuthServiceTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        return new ResourceConfig(AuthWebService.class).register(new AbstractBinder() {
+        return new ResourceConfig(AuthService.class).register(new AbstractBinder() {
             @Override
             protected void configure() {
                 bind(UsersHandler.class).to(IUsersHandler.class).in(Singleton.class);

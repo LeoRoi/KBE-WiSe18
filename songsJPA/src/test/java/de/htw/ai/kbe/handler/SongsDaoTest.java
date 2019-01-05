@@ -1,4 +1,4 @@
-package de.htw.ai.kbe.storage;
+package de.htw.ai.kbe.handler;
 
 import de.htw.ai.kbe.entity.Song;
 import org.junit.*;
@@ -8,7 +8,6 @@ import static org.junit.Assert.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import java.util.NoSuchElementException;
 
 import static de.htw.ai.kbe.utils.Constants.*;
