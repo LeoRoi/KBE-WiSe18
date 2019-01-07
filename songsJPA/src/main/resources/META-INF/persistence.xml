@@ -5,6 +5,8 @@
     https://stackoverflow.com/questions/16572039/connecting-postgresql-9-2-1-with-hibernate
     -->
 
+    <!-- app controls transactions
+    JTA that would be the JavaEE server-->
     <persistence-unit name="songDB-PU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
