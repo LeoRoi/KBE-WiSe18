@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.htw.ai.kbe</groupId>
-    <artifactId>songsJPA</artifactId>
+    <artifactId>songsRX</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
 

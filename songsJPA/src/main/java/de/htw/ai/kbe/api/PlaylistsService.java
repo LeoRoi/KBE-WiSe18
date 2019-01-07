@@ -6,10 +6,7 @@ import de.htw.ai.kbe.handler.ISongsHandler;
 import de.htw.ai.kbe.handler.IUsersHandler;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
@@ -26,10 +23,10 @@ public class PlaylistsService {
     @Inject
     IPlaylistsHandler playlistsHandler;
 
+    //TODO path userID
     @GET
-    @Path("/{userId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response getUserPlaylists(@PathParam("userId") int uid) {
+    public Response getUserPlaylists(@QueryParam("userId") int uid) {
         System.out.println("getPlaylists");
         return Response.ok(playlistsHandler.getUserPlaylists(uid)).build();
     }
