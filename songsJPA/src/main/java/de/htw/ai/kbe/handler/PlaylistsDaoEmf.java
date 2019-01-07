@@ -2,20 +2,24 @@ package de.htw.ai.kbe.handler;
 
 import de.htw.ai.kbe.entity.Playlist;
 import de.htw.ai.kbe.entity.User;
+import de.htw.ai.kbe.utils.PsqlCloser;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import java.util.List;
 
+@Singleton
 public class PlaylistsDaoEmf implements IPlaylistsHandler {
     private EntityManagerFactory emf;
 
     @Inject
     public PlaylistsDaoEmf(EntityManagerFactory emf) {
         this.emf = emf;
+        PsqlCloser.addEntityManagerFactory(emf);
     }
 
     @Override

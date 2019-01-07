@@ -3,6 +3,7 @@ package de.htw.ai.kbe.handler;
 import de.htw.ai.kbe.entity.User;
 import de.htw.ai.kbe.utils.Utils;
 
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -20,7 +21,7 @@ import static de.htw.ai.kbe.utils.Constants.PERSISTENCE_UNIT_NAME;
  * or convert from db?
  *
  */
-
+@Singleton
 public class UsersHandler implements IUsersHandler {
     private static Map<String, String> storage;
 

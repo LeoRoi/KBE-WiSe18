@@ -1,8 +1,10 @@
 package de.htw.ai.kbe.handler;
 
 import de.htw.ai.kbe.entity.Song;
+import de.htw.ai.kbe.utils.PsqlCloser;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.Collection;
@@ -10,12 +12,14 @@ import java.util.Collection;
 /**
  * did not work
  */
+@Singleton
 public class SongsDaoEmf implements ISongsHandler {
     private EntityManagerFactory emf;
 
     @Inject
     public SongsDaoEmf(EntityManagerFactory emf) {
         this.emf = emf;
+        PsqlCloser.addEntityManagerFactory(emf);
     }
 
     public Song getSong(int id) {
