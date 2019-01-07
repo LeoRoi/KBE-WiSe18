@@ -62,16 +62,25 @@ public class SongsDaoEmf implements ISongsHandler {
 
     @Transactional
     public boolean updateSong(int id, Song newSong) {
+        EntityManager em = emf.createEntityManager();
         Song song = getSong(id);
 
         if (song != null) {
-            EntityManager em = emf.createEntityManager();
-            em.merge(newSong);
+            em.getTransaction().begin();
+            Song dbSong = em.find(Song.class, id);
+
+            dbSong.setReleased(newSong.getReleased());
+            dbSong.setArtist(newSong.getArtist());
+            dbSong.setTitle(newSong.getTitle());
+            dbSong.setAlbum(newSong.getAlbum());
+
+            em.getTransaction().commit();
             return true;
         } else {
             return false;
         }
     }
+
 
     public boolean deleteSong(int id) {
         EntityManager em = emf.createEntityManager();

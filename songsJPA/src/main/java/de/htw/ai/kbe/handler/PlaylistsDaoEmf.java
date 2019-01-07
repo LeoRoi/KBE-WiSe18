@@ -1,29 +1,33 @@
 package de.htw.ai.kbe.handler;
 
 import de.htw.ai.kbe.entity.Playlist;
-import de.htw.ai.kbe.entity.Song;
 import de.htw.ai.kbe.entity.User;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import java.util.List;
 
-public class PlaylistsDao implements IPlaylistsHandler {
-    private EntityManager em;
+public class PlaylistsDaoEmf implements IPlaylistsHandler {
+    private EntityManagerFactory emf;
 
     @Inject
-    public PlaylistsDao(EntityManager em) {
-        this.em = em;
+    public PlaylistsDaoEmf(EntityManagerFactory emf) {
+        this.emf = emf;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Playlist> getUserPlaylists(int uid) {
-        Query q = em.createQuery("SELECT pl from Playlist pl where pl.owner = :uid", Playlist.class).setParameter("uid", uid);
-        return q.getResultList();
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query q = em.createQuery("SELECT pl from Playlist pl where pl.owner = :uid", Playlist.class).setParameter("uid", uid);
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
@@ -34,6 +38,7 @@ public class PlaylistsDao implements IPlaylistsHandler {
 
     @Override
     public int addPlaylist(Playlist playlist) {
+        EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
             em.persist(playlist);
@@ -44,11 +49,14 @@ public class PlaylistsDao implements IPlaylistsHandler {
             System.out.println("Error adding new playlist: " + e.getMessage());
             em.getTransaction().rollback();
             throw new PersistenceException("Could not persist entity: " + e.toString());
+        } finally {
+            em.close();
         }
     }
 
     @Override
     public boolean deletePlaylist(int pid) {
+        EntityManager em = emf.createEntityManager();
         try {
             Playlist list = em.find(Playlist.class, pid);
             if (list != null) {
@@ -63,6 +71,8 @@ public class PlaylistsDao implements IPlaylistsHandler {
             System.out.println("Error removing playlist: " + e.getMessage());
             em.getTransaction().rollback();
             throw new PersistenceException("Could not remove entity: " + e.toString());
+        } finally {
+            em.close();
         }
         return false;
     }
