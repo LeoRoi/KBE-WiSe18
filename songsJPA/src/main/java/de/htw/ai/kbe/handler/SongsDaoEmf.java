@@ -1,7 +1,7 @@
 package de.htw.ai.kbe.handler;
 
 import de.htw.ai.kbe.entity.Song;
-import de.htw.ai.kbe.utils.PsqlCloser;
+import de.htw.ai.kbe.utils.PostgreCloser;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,7 +19,7 @@ public class SongsDaoEmf implements ISongsHandler {
     @Inject
     public SongsDaoEmf(EntityManagerFactory emf) {
         this.emf = emf;
-        PsqlCloser.addEntityManagerFactory(emf);
+        PostgreCloser.addEntityManagerFactory(emf);
     }
 
     public Song getSong(int id) {

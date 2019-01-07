@@ -2,7 +2,7 @@ package de.htw.ai.kbe.handler;
 
 import de.htw.ai.kbe.entity.Playlist;
 import de.htw.ai.kbe.entity.User;
-import de.htw.ai.kbe.utils.PsqlCloser;
+import de.htw.ai.kbe.utils.PostgreCloser;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,7 +19,7 @@ public class PlaylistsDaoEmf implements IPlaylistsHandler {
     @Inject
     public PlaylistsDaoEmf(EntityManagerFactory emf) {
         this.emf = emf;
-        PsqlCloser.addEntityManagerFactory(emf);
+        PostgreCloser.addEntityManagerFactory(emf);
     }
 
     @Override

@@ -7,8 +7,11 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+/**
+ * credits to Donat
+ */
 @WebListener
-public class PsqlCloser implements ServletContextListener {
+public class PostgreCloser implements ServletContextListener {
     static private List<EntityManagerFactory> emfs = new ArrayList<>();
 
     @Override
