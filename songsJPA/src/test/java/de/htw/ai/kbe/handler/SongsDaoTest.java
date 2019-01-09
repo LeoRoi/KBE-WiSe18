@@ -89,6 +89,6 @@ public class SongsDaoTest {
 
         //reset the sequence
         //TODO fix
-        em.createNativeQuery("alter sequence songs_id_seq restart with 11;");
+//        em.createNativeQuery("alter sequence songs_id_seq restart with 11;");
     }
 }
