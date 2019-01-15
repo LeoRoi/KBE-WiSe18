@@ -16,11 +16,9 @@
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:PUBLIC"/>
 
-            <property name="javax.persistence.jdbc.user" value="sa"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
-
             <property name="javax.persistence.schema-generation.database.action" value="create"/>
             <property name="javax.persistence.sql-load-script-source" value="sql/data.sql"/>
         </properties>
+
     </persistence-unit>
 </persistence>
