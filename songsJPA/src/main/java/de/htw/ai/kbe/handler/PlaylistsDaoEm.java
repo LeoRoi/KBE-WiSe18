@@ -1,14 +1,12 @@
 package de.htw.ai.kbe.handler;
 
 import de.htw.ai.kbe.entity.Playlist;
-import de.htw.ai.kbe.entity.Song;
 import de.htw.ai.kbe.entity.User;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
-import javax.persistence.Query;
+import java.util.Collection;
 import java.util.List;
 
 public class PlaylistsDaoEm implements IPlaylistsHandler {
@@ -19,15 +17,19 @@ public class PlaylistsDaoEm implements IPlaylistsHandler {
         this.em = em;
     }
 
+
     @Override
-    @SuppressWarnings("unchecked")
-    public List<Playlist> getUserPlaylists(int uid) {
-        Query q = em.createQuery("SELECT pl from Playlist pl where pl.owner = :uid", Playlist.class).setParameter("uid", uid);
-        return q.getResultList();
+    public List<Playlist> getUsersPlaylists(User owner) {
+        return null;
     }
 
     @Override
-    public Playlist getUserPlaylistsWithId(User user, int pid) {
+    public List<Playlist> getUsersPublicPlaylists(User owner) {
+        return null;
+    }
+
+    @Override
+    public Playlist getUserPlaylistById(int pid) {
 
         return null;
     }

@@ -10,7 +10,7 @@ import javax.persistence.Persistence;
 public class DependencyBinder extends AbstractBinder {
     @Override
     protected void configure() {
-        bind (Persistence
+         bind (Persistence
                 .createEntityManagerFactory("songDB-PU"))
                 .to(EntityManagerFactory.class);
         bind(SongsDaoEmf.class).to(ISongsHandler.class).in(Singleton.class);

@@ -45,6 +45,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         Map<String, String> tokenMap = handler.getStorage();
         if (tokenMap.containsValue(token)) {
             System.out.println("authenticated");
+            handler.setCurrentUser(token);
             return true;
         }
         return false;

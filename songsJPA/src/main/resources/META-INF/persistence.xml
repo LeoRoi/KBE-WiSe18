@@ -28,12 +28,20 @@
             <!-- SQL dialect -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL92Dialect"/>
 
+
             <!-- JDBC connection pool (use the built-in) -->
             <property name="connection.pool_size" value="1"/>
 
             <!--connection pool KBE-12.27-->
-            <property name="hibernate.c3p0.timeout" value="600"/>
             <property name="hibernate.connection.release_mode" value="after_statement"/>
+           <!-- <property name="hibernate.c3p0.timeout" value="600"/>
+            &lt;!&ndash;<property name="hibernate.connection.isolation" value="Connection.TRANSACTION_READ_UNCOMMITTED"/>&ndash;&gt;
+
+            &lt;!&ndash;  Number of prepared statements that will be cached.
+                  Hibernate default: 0 , caching is disable. &ndash;&gt;
+            <property name="hibernate.c3p0.max_statements" value="50"/>-->
+
+            <!--<property name="hibernate.connection.handling_mode" value=""/>-->
         </properties>
     </persistence-unit>
 </persistence>

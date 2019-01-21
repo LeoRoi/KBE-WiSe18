@@ -6,10 +6,7 @@ import de.htw.ai.kbe.utils.PostgreCloser;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
 
 @Singleton
@@ -24,20 +21,61 @@ public class PlaylistsDaoEmf implements IPlaylistsHandler {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Playlist> getUserPlaylists(int uid) {
+    public List<Playlist> getUsersPlaylists(User owner) {
         EntityManager em = emf.createEntityManager();
+        List<Playlist> p = null;
+        TypedQuery<Playlist> query;
+
         try {
-            Query q = em.createQuery("SELECT pl from Playlist pl where pl.owner = :uid", Playlist.class).setParameter("uid", uid);
-            return q.getResultList();
+            query = em.createQuery("SELECT pl from Playlist pl where pl.owner = :owner", Playlist.class)
+                    .setParameter("owner", owner);
+            p = query.getResultList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error getting all playlist's: " + e.getMessage());
         } finally {
             em.close();
         }
+        return p;
     }
 
-    @Override
-    public Playlist getUserPlaylistsWithId(User user, int pid) {
 
-        return null;
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Playlist> getUsersPublicPlaylists(User owner) {
+        EntityManager em = emf.createEntityManager();
+        List<Playlist> p = null;
+        TypedQuery<Playlist> query;
+
+        try {
+            query = em.createQuery("SELECT pl from Playlist pl where pl.owner =:owner  and pl.open = true", Playlist.class)
+                    .setParameter("owner", owner);
+            p = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error getting all playlist's: " + e.getMessage());
+        } finally {
+            em.close();
+        }
+        return p;
+    }
+
+
+    @Override
+    public Playlist getUserPlaylistById(int pid) {
+        EntityManager em = emf.createEntityManager();
+        Playlist playlist = null;
+
+        try {
+            playlist = em.find(Playlist.class, pid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error getting playlist: " + e.getMessage());
+        } finally {
+            em.close();
+        }
+        return playlist;
     }
 
     @Override
@@ -63,6 +101,7 @@ public class PlaylistsDaoEmf implements IPlaylistsHandler {
         EntityManager em = emf.createEntityManager();
         try {
             Playlist list = em.find(Playlist.class, pid);
+            System.out.println(" listId=" + list.getId() + " owner=" + list.getOwner());
             if (list != null) {
                 System.out.println("Deleting: " + list);
                 em.getTransaction().begin();

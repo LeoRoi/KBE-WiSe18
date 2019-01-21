@@ -14,12 +14,12 @@ public class Playlist {
     private int id;
     private boolean open;
 
+    @JoinColumn(name = "owner", referencedColumnName = "id", insertable = true, updatable = false)
     @ManyToOne
-//    @JoinColumn(name="users_id")
     private User owner;
 
     //songs unidirectional owner
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "psmap", joinColumns = { @JoinColumn(name = "pid") }, inverseJoinColumns = {            @JoinColumn(name = "sid") })
     private List<Song> content;
 
