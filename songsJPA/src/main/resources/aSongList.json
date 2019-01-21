@@ -1,0 +1,17 @@
+{
+  "open": true,
+  "owner": {
+    "id": 1,
+    "userId": "mmuster",
+    "firstName": "Maxime",
+    "lastName": "Muster"
+  },
+  "content": [
+    {
+      "title": "i hate u, i love u",
+      "artist": "Gnash",
+      "album": "Top Hits 2017",
+      "released": 2017
+    }
+  ]
+}
