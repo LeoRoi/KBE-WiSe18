@@ -69,8 +69,10 @@ public class PlaylistsService {
                     .status(404, "Playlist not found"
                     ).build();
         }
+
         boolean userAndOwnerIdentical = playlist.getOwner().getId().equals(usersHandler.getCurrentUser().getId());
-        if (userAndOwnerIdentical) {
+        boolean publicPlaylist = playlist.isOpen();
+        if (userAndOwnerIdentical || publicPlaylist) {
             return Response
                     .status(200)
                     .entity(playlist)
